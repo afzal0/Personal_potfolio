@@ -1,0 +1,23 @@
+[
+  {
+    "degree": "Master of Data Science",
+    "institution": "Monash University",
+    "location": "Melbourne, Australia",
+    "years": "2023-2025",
+    "description": "GPA: 3.4/4.0 - Advanced coursework in machine learning, data visualization, and statistical modeling."
+  },
+  {
+    "degree": "Master of Science in Geoinformatics",
+    "institution": "TERI School of Advanced Studies",
+    "location": "New Delhi, India",
+    "years": "2020-2022",
+    "description": "CGPA: 9.32/10 - Specialized in remote sensing, spatial analysis, and geospatial modeling."
+  },
+  {
+    "degree": "Bachelor of Arts (Hons) in Geography",
+    "institution": "Delhi University",
+    "location": "Departmental Honors",
+    "years": "2015-2018",
+    "description": "CGPA: 8.1/10 - Multiple 3rd-place finishes in departmental rankings."
+  }
+]

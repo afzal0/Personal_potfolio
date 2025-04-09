@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Sir John Monash Scholarship for Excellence",
+    "organization": "Monash University",
+    "year": "2023",
+    "description": "Awarded for outstanding academic achievement and potential for future contributions to data science."
+  },
+  {
+    "title": "Gold Medal for Academic Distinction",
+    "organization": "TERI School of Advanced Studies",
+    "year": "2022",
+    "description": "Awarded for finishing at the top of the MSc Geoinformatics program with a CGPA of 9.32/10."
+  },
+  {
+    "title": "Stellar Performer Award",
+    "organization": "Precisely",
+    "year": "2023",
+    "description": "Recognized for exceptional contributions to data integration projects and innovative solutions."
+  }
+]

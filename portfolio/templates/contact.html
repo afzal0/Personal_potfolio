@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Afzal Khan</title>
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <style>
+        .hero-contact {
+            height: 40vh;
+            min-height: 300px;
+        }
+        
+        .contact-box {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+        
+        .contact-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .contact-box-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .contact-alternative {
+            margin-top: 4rem;
+        }
+        
+        .socials {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .social-link {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 1rem;
+            color: white;
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+        
+        .social-link:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-5px);
+        }
+        
+        body.dark-mode .contact-box {
+            background-color: #1e1e1e;
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <a href="{{ url_for('index') }}" class="nav-logo">Afzal<span>Khan</span></a>
+            
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="{{ url_for('index') }}#hero" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="{{ url_for('index') }}#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="{{ url_for('index') }}#skills" class="nav-link">Skills</a></li>
+                <li class="nav-item"><a href="{{ url_for('index') }}#resume" class="nav-link">Resume</a></li>
+                <li class="nav-item"><a href="{{ url_for('index') }}#projects" class="nav-link">Projects</a></li>
+                <li class="nav-item"><a href="{{ url_for('index') }}#visualizations" class="nav-link">Visualizations</a></li>
+                <li class="nav-item"><a href="{{ url_for('index') }}#awards" class="nav-link">Awards</a></li>
+                <li class="nav-item"><a href="{{ url_for('index') }}#contact" class="nav-link active">Contact</a></li>
+            </ul>
+            
+            <button class="mobile-nav-toggle fas fa-bars"></button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero hero-contact">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Contact Me</h1>
+                <h2 class="hero-subtitle">Let's discuss your project or opportunity</h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Details Section -->
+    <section class="contact-details">
+        <div class="container">
+            <h2>Get In Touch</h2>
+            
+            <div class="row" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 2rem;">
+                <div class="contact-box text-center" data-aos="fade-up">
+                    <div class="contact-box-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>My Address</h3>
+                    <p>123 GIS Avenue, Data District</p>
+                    <p>New York, NY 10001</p>
+                    <p>United States</p>
+                </div>
+                
+                <div class="contact-box text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="contact-box-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Email Me</h3>
+                    <p>afzal.khan@example.com</p>
+                    <p>contact@afzalkhan.com</p>
+                </div>
+                
+                <div class="contact-box text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="contact-box-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <h3>Call Me</h3>
+                    <p>+1 (555) 123-4567</p>
+                    <p>+1 (555) 987-6543</p>
+                </div>
+                
+                <div class="contact-box text-center" data-aos="fade-up" data-aos-delay="300">
+                    <div class="contact-box-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Working Hours</h3>
+                    <p>Monday - Friday: 9:00 AM - 5:00 PM</p>
+                    <p>Saturday: 10:00 AM - 2:00 PM</p>
+                </div>
+            </div>
+            
+            <div class="contact-form-section" data-aos="fade-up">
+                <div class="contact-form-container" style="background-color: white; border-radius: var(--border-radius); padding: 3rem; box-shadow: var(--box-shadow); margin-top: 3rem;">
+                    <h3 class="text-center" style="margin-bottom: 2rem;">Send Me a Message</h3>
+                    <form action="#" method="post">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                            <div class="form-group">
+                                <input type="text" name="name" placeholder="Your Name" required style="width: 100%; padding: 1rem; border: 1px solid #ddd; border-radius: var(--border-radius); font-family: inherit;">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" name="email" placeholder="Your Email" required style="width: 100%; padding: 1rem; border: 1px solid #ddd; border-radius: var(--border-radius); font-family: inherit;">
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <input type="text" name="subject" placeholder="Subject" required style="width: 100%; padding: 1rem; border: 1px solid #ddd; border-radius: var(--border-radius); font-family: inherit;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <textarea name="message" placeholder="Your Message" required style="width: 100%; padding: 1rem; border: 1px solid #ddd; border-radius: var(--border-radius); font-family: inherit; height: 180px;"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="contact-alternative text-center" data-aos="fade-up">
+                <h3>Connect With Me On Social Media</h3>
+                <p>You can also reach me through my social media profiles:</p>
+                
+                <div class="socials">
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-researchgate"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="map" data-aos="zoom-in" style="margin-top: 4rem; height: 450px; border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--box-shadow);">
+                <!-- Placeholder for map or embed your Google Maps -->
+                <img src="{{ url_for('static', filename='images/map-placeholder.jpg') }}" alt="Location Map" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>Afzal Khan</h3>
+                    <p>A passionate Geoinformatics and Data Science specialist dedicated to leveraging spatial data through advanced analytical techniques.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-researchgate"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{{ url_for('index') }}#hero">Home</a></li>
+                        <li><a href="{{ url_for('index') }}#about">About</a></li>
+                        <li><a href="{{ url_for('index') }}#skills">Skills</a></li>
+                        <li><a href="{{ url_for('index') }}#projects">Projects</a></li>
+                        <li><a href="{{ url_for('index') }}#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-envelope"></i> afzal.khan@example.com</p>
+                    <p><i class="fas fa-phone-alt"></i> +1 (555) 123-4567</p>
+                    <p><i class="fas fa-map-marker-alt"></i> New York, NY, United States</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Afzal Khan. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Dark Mode Toggle -->
+    <div class="dark-mode-toggle-container">
+        <input type="checkbox" id="dark-mode-toggle" class="dark-mode-toggle">
+        <label for="dark-mode-toggle" class="dark-mode-label"></label>
+    </div>
+
+    <!-- Scroll to Top -->
+    <a href="#" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

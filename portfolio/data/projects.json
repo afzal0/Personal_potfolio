@@ -1,0 +1,34 @@
+[
+  {
+    "title": "ApplianceSense",
+    "description": "AI-powered chatbot for conversational access to appliance manuals, using lightweight language models, FAISS for semantic search, and Tesseract OCR.",
+    "technologies": ["FAISS", "Tesseract OCR", "Python", "Flask", "LLM Integration"],
+    "image": "urban_planning.jpg",
+    "github": "https://github.com/afzal0",
+    "demo": "#"
+  },
+  {
+    "title": "PropIntel",
+    "description": "Property management platform automating data ingestion with interactive dashboards for real-time insights into expenses and maintenance tasks.",
+    "technologies": ["Python", "Flask", "PostgreSQL", "Chart.js", "ETL"],
+    "image": "transportation.jpg",
+    "github": "https://github.com/afzal0",
+    "demo": "#"
+  },
+  {
+    "title": "Meteorological Drivers of Influenza",
+    "description": "Analysis of influenza cases alongside climate data using Spatial Bayesian Distributed Lag Non-Linear Models to quantify climate-influenza relationships.",
+    "technologies": ["R", "Bayesian Statistics", "Spatial Analysis", "R Shiny"],
+    "image": "environmental_monitoring.jpg",
+    "github": "https://github.com/afzal0",
+    "demo": "#"
+  },
+  {
+    "title": "Salmonella & Climate Patterns",
+    "description": "32-year study investigating correlations between temperature, rainfall, floods, and Salmonella outbreaks using Bayesian spatiotemporal methods.",
+    "technologies": ["R", "Bayesian Models", "GIS", "Climate Data Analysis"],
+    "image": "climate_change.jpg",
+    "github": "https://github.com/afzal0",
+    "demo": "#"
+  }
+]

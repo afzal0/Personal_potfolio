@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Project Lead Developer (Data & Analytics)",
+    "company": "A8 Consulting Pty Ltd",
+    "location": "Melbourne, Australia",
+    "years": "Feb 2025-Present",
+    "description": "Leading the development of data analytics solutions, ETL pipelines, and integration of geospatial technologies for diverse clients.",
+    "achievements": [
+      "Architected Python-based applications on Azure and Heroku with microservices architecture",
+      "Engineered dynamic Power BI dashboards using advanced DAX calculations and spatial visualizations",
+      "Implemented data governance best practices and optimized database schema updates"
+    ]
+  },
+  {
+    "title": "Customer Service Representative (Data-Focused)",
+    "company": "Arisit",
+    "location": "Melbourne, Australia",
+    "years": "May 2024-Mar 2025",
+    "description": "Processed and analyzed warranty claims, created Power BI dashboards, and optimized operational workflows through data analysis.",
+    "achievements": [
+      "Refined standard operating procedures, reducing claim resolution time",
+      "Created Power BI dashboards for real-time insights into product performance",
+      "Provided detailed performance reports enabling data-driven managerial decisions"
+    ]
+  },
+  {
+    "title": "Associate Software Engineer",
+    "company": "Precisely",
+    "location": "Delhi, India",
+    "years": "Jul 2022-Jul 2023",
+    "description": "Built scalable data integration solutions with Python, Jenkins, and AWS while integrating GIS capabilities with advanced analytics.",
+    "achievements": [
+      "Optimized large-scale ETL pipelines reducing processing times by ~30%",
+      "Integrated GIS capabilities with advanced analytics for spatial data products",
+      "Received Stellar Performer and multiple Lifeforce Round of Applause Awards"
+    ]
+  }
+]
