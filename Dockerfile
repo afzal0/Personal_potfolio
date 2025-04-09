@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN pip install --no-cache-dir -r portfolio/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Make port 8080 available for the app
 EXPOSE 8080
