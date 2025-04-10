@@ -1,23 +1,35 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Preloader
+    // Check for mobile devices
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    window.isMobileDevice = isMobile;
+    
+    if (isMobile) {
+        document.body.classList.add('mobile-device');
+    }
+    
+    // Preloader with minimal delay on mobile
     setTimeout(function() {
         const preloader = document.querySelector('.preloader');
         preloader.style.opacity = '0';
         setTimeout(function() {
             preloader.style.display = 'none';
         }, 500);
-    }, 1000);
+    }, isMobile ? 500 : 1000);
     
-    // Initialize background animations for each section
+    // Initialize background animations for each section (lighter on mobile)
     initSectionBackgrounds();
 
-    // Initialize AOS (Animate on Scroll)
+    // Initialize AOS (Animate on Scroll) with mobile optimizations
     if (typeof AOS !== 'undefined') {
         AOS.init({
-            duration: 1000,
+            duration: isMobile ? 800 : 1000,
             easing: 'ease-in-out',
             once: true,
-            mirror: false
+            mirror: false,
+            disable: function() {
+                // Disable on very small mobile devices for performance
+                return window.innerWidth < 360;
+            }
         });
     }
     
@@ -26,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeSVGAnimations();
     }
     
-    // Initialize Awards Slider
+    // Initialize Awards Slider with touch support
     initAwardsSlider();
 
     // Navbar scroll effect
@@ -851,7 +863,7 @@ function initExperienceInteractivity() {
     }
 }
 
-// Awards Slider Functionality
+// Enhanced Awards Slider Functionality with Mobile Optimizations
 function initAwardsSlider() {
     const sliderContainer = document.querySelector('.awards-slider-container');
     if (!sliderContainer) return;
@@ -861,12 +873,27 @@ function initAwardsSlider() {
     const dotsContainer = document.querySelector('.slider-dots');
     const slides = document.querySelectorAll('.award-item');
     
+    // Add special handling for mobile devices
+    if (window.isMobileDevice) {
+        sliderContainer.setAttribute('aria-label', 'Awards slider, swipe left or right');
+        sliderContainer.style.touchAction = 'pan-y';
+        if (slides.length > 0) {
+            slides[0].setAttribute('aria-label', 'First award, swipe left to see more');
+        }
+    }
+    
     if (slides.length === 0) return;
     
     // Variables
     let slideWidth;
     let currentIndex = 0;
     let visibleSlides;
+    let isDragging = false;
+    let startPos = 0;
+    let currentTranslate = 0;
+    let prevTranslate = 0;
+    let animationID = 0;
+    let currentPosition = 0;
     
     // Create dots based on number of pages
     function createDots() {
@@ -899,12 +926,16 @@ function initAwardsSlider() {
     }
     
     // Update the slider position
-    function updateSlider() {
+    function updateSlider(transition = true) {
         // Get the current slide width (including gap)
         slideWidth = slides[0].offsetWidth + 20; // 20px is our gap
         
         // Calculate new position
         const newPosition = -currentIndex * slideWidth * visibleSlides;
+        currentPosition = newPosition;
+        
+        // Apply or remove transition based on parameter
+        sliderContainer.style.transition = transition ? 'transform 0.4s ease-out' : 'none';
         sliderContainer.style.transform = `translateX(${newPosition}px)`;
         
         // Update active dot
@@ -936,82 +967,200 @@ function initAwardsSlider() {
         updateSlider();
     }
     
-    // Add event listeners
+    // Add event listeners for buttons
     if (nextBtn) nextBtn.addEventListener('click', nextSlide);
     if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+    
+    // Mobile touch events with improved handling
+    function touchStart(event) {
+        const isMobile = window.isMobileDevice || window.innerWidth <= 991;
+        
+        if (isMobile) {
+            startPos = getPositionX(event);
+            isDragging = true;
+            animationID = requestAnimationFrame(animation);
+            sliderContainer.style.cursor = 'grabbing';
+            
+            // Disable transition while dragging
+            sliderContainer.style.transition = 'none';
+        }
+    }
+    
+    function touchEnd() {
+        const isMobile = window.isMobileDevice || window.innerWidth <= 991;
+        
+        if (isMobile) {
+            isDragging = false;
+            cancelAnimationFrame(animationID);
+            sliderContainer.style.cursor = 'grab';
+            
+            // Calculate movement
+            const movedBy = currentTranslate - prevTranslate;
+            
+            // Determine if we should slide
+            if (movedBy < -50) {
+                nextSlide();
+            } else if (movedBy > 50) {
+                prevSlide();
+            } else {
+                // Reset back to current slide
+                updateSlider();
+            }
+        }
+    }
+    
+    function touchMove(event) {
+        if (isDragging) {
+            const currentPosition = getPositionX(event);
+            currentTranslate = prevTranslate + currentPosition - startPos;
+        }
+    }
+    
+    function getPositionX(event) {
+        return event.type.includes('mouse') 
+            ? event.pageX 
+            : event.touches[0].clientX;
+    }
+    
+    function animation() {
+        if (isDragging) {
+            setSliderPosition();
+            requestAnimationFrame(animation);
+        }
+    }
+    
+    function setSliderPosition() {
+        sliderContainer.style.transform = `translateX(${currentPosition + currentTranslate - prevTranslate}px)`;
+    }
+    
+    // Touch events
+    sliderContainer.addEventListener('touchstart', touchStart);
+    sliderContainer.addEventListener('touchend', touchEnd);
+    sliderContainer.addEventListener('touchmove', touchMove);
+    
+    // Mouse events (for desktop dragging)
+    sliderContainer.addEventListener('mousedown', touchStart);
+    sliderContainer.addEventListener('mouseup', touchEnd);
+    sliderContainer.addEventListener('mouseleave', touchEnd);
+    sliderContainer.addEventListener('mousemove', touchMove);
+    
+    // Prevent context menu on long press
+    sliderContainer.addEventListener('contextmenu', e => {
+        if (window.isMobileDevice) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+    });
     
     // Initialize slider
     createDots();
     updateSlider();
     
     // Handle window resize
+    let resizeTimer;
     window.addEventListener('resize', () => {
-        createDots(); // Recreate dots based on new screen size
-        currentIndex = 0; // Reset to first slide
-        updateSlider();
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            createDots(); // Recreate dots based on new screen size
+            currentIndex = 0; // Reset to first slide
+            prevTranslate = 0;
+            currentTranslate = 0;
+            updateSlider();
+        }, 250); // Debounce resize event
     });
     
-    // Touch events for swipe
-    let touchStartX = 0;
-    let touchEndX = 0;
-    
-    sliderContainer.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-    });
-    
-    sliderContainer.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    });
-    
-    function handleSwipe() {
-        const swipeThreshold = 50;
-        if (touchStartX - touchEndX > swipeThreshold) {
-            nextSlide(); // Swipe left means next slide
-        } else if (touchEndX - touchStartX > swipeThreshold) {
-            prevSlide(); // Swipe right means previous slide
+    // Set up auto-slide for larger screens only (optional)
+    let autoSlideTimer;
+    function setupAutoSlide() {
+        if (window.innerWidth > 991) {
+            autoSlideTimer = setInterval(nextSlide, 5000);
+        } else {
+            clearInterval(autoSlideTimer);
         }
     }
+    
+    setupAutoSlide();
+    
+    // Clear auto-slide on interaction
+    const clearAutoSlide = () => {
+        clearInterval(autoSlideTimer);
+        if (window.innerWidth > 991) {
+            autoSlideTimer = setInterval(nextSlide, 7000);
+        }
+    };
+    
+    sliderContainer.addEventListener('mouseenter', () => clearInterval(autoSlideTimer));
+    sliderContainer.addEventListener('mouseleave', setupAutoSlide);
+    sliderContainer.addEventListener('touchstart', clearAutoSlide);
+    if (nextBtn) nextBtn.addEventListener('click', clearAutoSlide);
+    if (prevBtn) prevBtn.addEventListener('click', clearAutoSlide);
 }
 
-// Initialize Dark-themed Leaflet Map
+// Initialize Dark-themed Leaflet Map with Mobile Optimizations
 function initDarkLeafletMap() {
     const mapElement = document.getElementById('leaflet-map');
     if (!mapElement) return;
     
+    // Check if Leaflet is available
+    if (typeof L === 'undefined') {
+        console.warn('Leaflet library not found, map initialization skipped.');
+        return;
+    }
+    
+    // Check if mobile or small screen
+    const isMobile = window.isMobileDevice || window.innerWidth <= 768;
+    
     // Melbourne Central coordinates
     const melbourneCentral = [-37.8110, 144.9626];
     
-    // Initialize map
+    // Initialize map with mobile considerations
     const map = L.map('leaflet-map', {
         center: melbourneCentral,
-        zoom: 13,
+        zoom: isMobile ? 12 : 13, // Lower zoom on mobile
         zoomControl: false, // We'll add it in a better position
-        attributionControl: false // We'll add it back in a better position
+        attributionControl: false, // We'll add it back in a better position
+        tap: true, // Enable tap handler for mobile 
+        dragging: !L.Browser.mobile ? true : true, // Enable dragging on mobile
+        touchZoom: true,
+        scrollWheelZoom: !isMobile // Disable scroll wheel zoom on mobile
     });
     
-    // Add zoom control to the top right
+    // Add zoom control to the top right (or bottom right on very small screens)
     L.control.zoom({
-        position: 'topright'
+        position: window.innerWidth <= 375 ? 'bottomright' : 'topright',
+        zoomInText: '+',
+        zoomOutText: '-',
+        zoomInTitle: 'Zoom in',
+        zoomOutTitle: 'Zoom out'
     }).addTo(map);
     
-    // Add attribution control to the bottom right
-    L.control.attribution({
-        position: 'bottomright',
-        prefix: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
+    // Add minimal attribution only on desktop or simplified on mobile
+    if (!isMobile) {
+        L.control.attribution({
+            position: 'bottomright',
+            prefix: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+    } else {
+        L.control.attribution({
+            position: 'bottomright',
+            prefix: '© OSM'
+        }).addTo(map);
+    }
     
-    // Dark theme map from CartoDB
+    // Dark theme map from CartoDB - adjust maxNativeZoom for mobile performance
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
         maxZoom: 19,
+        maxNativeZoom: isMobile ? 17 : 19, // Lower max native zoom for mobile 
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
     }).addTo(map);
     
-    // Create custom marker
+    // Create custom marker with responsive size
+    const markerSize = isMobile ? 16 : 20;
     const customMarkerIcon = L.divIcon({
         className: 'custom-map-marker',
-        iconSize: [20, 20],
-        iconAnchor: [10, 10]
+        iconSize: [markerSize, markerSize],
+        iconAnchor: [markerSize/2, markerSize/2]
     });
     
     // Add marker for Melbourne Central
@@ -1019,37 +1168,68 @@ function initDarkLeafletMap() {
         icon: customMarkerIcon
     }).addTo(map);
     
-    // Add a pulsing circle around the marker
+    // Add a pulsing circle around the marker - smaller on mobile
     const pulsingCircle = L.circleMarker(melbourneCentral, {
-        radius: 30,
+        radius: isMobile ? 20 : 30,
         color: 'rgba(42, 157, 143, 0.4)',
         fillColor: 'rgba(42, 157, 143, 0.1)',
-        weight: 2,
+        weight: isMobile ? 1.5 : 2,
         fillOpacity: 0.3
     }).addTo(map);
     
-    // Animate the pulsing circle
+    // Animate the pulsing circle - optimize for mobile
     function animateCircle() {
-        const start = 15;
-        const end = 40;
+        const start = isMobile ? 12 : 15;
+        const end = isMobile ? 30 : 40;
         const duration = 1500;
         let step = 0;
+        let animationFrame;
         
         function animate() {
             step = (step + 1) % 60;
             const size = start + (end - start) * Math.abs(Math.sin(step / 60 * Math.PI));
             pulsingCircle.setRadius(size);
-            requestAnimationFrame(animate);
+            
+            // Reduce animation frame rate on mobile for better performance
+            if (isMobile) {
+                if (step % 2 === 0) { // Skip every other frame on mobile
+                    animationFrame = requestAnimationFrame(animate);
+                }
+            } else {
+                animationFrame = requestAnimationFrame(animate);
+            }
         }
         
         animate();
+        
+        // Clean up animation when map is removed from DOM
+        return function cleanup() {
+            cancelAnimationFrame(animationFrame);
+        };
     }
     
-    animateCircle();
+    const stopAnimation = animateCircle();
     
     // Add a popup with info
     marker.bindPopup('<strong>Melbourne, Australia</strong><br>My Current Location', {
-        className: 'custom-popup'
+        className: 'custom-popup',
+        closeButton: false // Easier to close on mobile 
+    });
+    
+    // Open popup on load for mobile
+    if (isMobile) {
+        setTimeout(() => marker.openPopup(), 1000);
+    }
+    
+    // Handle map resize on orientation change and page visibility
+    window.addEventListener('orientationchange', () => {
+        setTimeout(() => map.invalidateSize(), 200);
+    });
+    
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            setTimeout(() => map.invalidateSize(), 200);
+        }
     });
     
     // Refresh map size when tab is shown (fixes Leaflet not rendering properly)
@@ -1060,6 +1240,9 @@ function initDarkLeafletMap() {
             }, 400);
         });
     });
+    
+    // Clean up on page unload to prevent memory leaks
+    window.addEventListener('beforeunload', stopAnimation);
 }
 
 function initializeDataAnimation() {
