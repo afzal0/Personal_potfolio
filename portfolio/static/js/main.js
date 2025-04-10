@@ -25,6 +25,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof initializeSVGAnimations === 'function') {
         initializeSVGAnimations();
     }
+    
+    // Initialize Awards Slider
+    initAwardsSlider();
 
     // Navbar scroll effect
     const header = document.querySelector('header');
@@ -150,20 +153,28 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Create the radar chart
             const ctx = radarCanvas.getContext('2d');
+            
+            // Create a gradient
+            const gradientFill = ctx.createLinearGradient(0, 0, 0, 400);
+            gradientFill.addColorStop(0, 'rgba(42, 157, 143, 0.7)');
+            gradientFill.addColorStop(1, 'rgba(38, 70, 83, 0.3)');
+            
             window.skillsRadarChart = new Chart(ctx, {
                 type: 'radar',
                 data: {
                     labels: topTechnicalSkills,
                     datasets: [{
-                        label: 'Skill Level',
+                        label: 'Expertise',
                         data: topTechnicalValues,
-                        backgroundColor: 'rgba(42, 157, 143, 0.2)',
+                        backgroundColor: gradientFill,
                         borderColor: 'rgba(42, 157, 143, 1)',
                         borderWidth: 2,
                         pointBackgroundColor: 'rgba(42, 157, 143, 1)',
                         pointBorderColor: '#fff',
                         pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgba(42, 157, 143, 1)'
+                        pointHoverBorderColor: 'rgba(42, 157, 143, 1)',
+                        pointRadius: 5,
+                        pointHoverRadius: 7
                     }]
                 },
                 options: {
@@ -173,13 +184,45 @@ document.addEventListener('DOMContentLoaded', function() {
                         r: {
                             angleLines: {
                                 display: true,
-                                color: 'rgba(0, 0, 0, 0.1)'
+                                color: 'rgba(42, 157, 143, 0.2)'
+                            },
+                            grid: {
+                                color: 'rgba(42, 157, 143, 0.1)'
                             },
                             suggestedMin: 50,
                             suggestedMax: 100,
                             ticks: {
-                                stepSize: 10
+                                stepSize: 10,
+                                backdropColor: 'transparent',
+                                color: '#666'
+                            },
+                            pointLabels: {
+                                color: '#444',
+                                font: {
+                                    family: "'Poppins', sans-serif",
+                                    size: 12,
+                                    weight: 'bold'
+                                }
                             }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(38, 70, 83, 0.8)',
+                            titleFont: {
+                                family: "'Poppins', sans-serif",
+                                size: 14
+                            },
+                            bodyFont: {
+                                family: "'Poppins', sans-serif",
+                                size: 13
+                            },
+                            padding: 12,
+                            boxPadding: 8,
+                            cornerRadius: 8
                         }
                     }
                 }
@@ -192,21 +235,54 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(initSkillsRadarChart, 500);
         }
         
-        // Animate hexagons on scroll
-        const hexItems = document.querySelectorAll('.hex-item');
-        let hexAnimationTriggered = false;
+        // Animate skill cards on scroll
+        const skillCards = document.querySelectorAll('.skill-card');
+        let skillsAnimationTriggered = false;
         
+        // Create staggered hover effect
+        skillCards.forEach((card) => {
+            // Add slight 3D rotation effect on mouse move
+            card.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                const posX = e.clientX - centerX;
+                const posY = e.clientY - centerY;
+                
+                // Calculate rotation based on mouse position
+                const rotateX = posY * -0.05;
+                const rotateY = posX * 0.05;
+                
+                // Apply the transform
+                this.style.transform = `translateY(-5px) scale(1.01) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            
+            // Reset on mouse leave
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+                setTimeout(() => {
+                    this.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                }, 100);
+            });
+        });
+        
+        // Staggered entrance animation on scroll
         window.addEventListener('scroll', function() {
             const sectionPos = skillsSection.getBoundingClientRect().top;
             const screenPos = window.innerHeight / 1.3;
             
-            if (sectionPos < screenPos && !hexAnimationTriggered) {
-                hexItems.forEach((hex, index) => {
+            if (sectionPos < screenPos && !skillsAnimationTriggered) {
+                skillCards.forEach((card, index) => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(30px)';
+                    
                     setTimeout(() => {
-                        hex.classList.add('animated');
-                    }, index * 50);
+                        card.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, index * 80); // Staggered timing
                 });
-                hexAnimationTriggered = true;
+                skillsAnimationTriggered = true;
             }
         });
     }
@@ -276,6 +352,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize Landing Page Data Animation
     initializeDataAnimation();
+    
+    // Initialize Dark Leaflet Map
+    initDarkLeafletMap();
 });
 
 // Data Visualizations
@@ -710,9 +789,18 @@ function initExperienceInteractivity() {
                 
                 // Add sliding animation
                 achievements.style.maxHeight = achievements.scrollHeight + 'px';
+                achievements.style.padding = '15px 20px';
             } else {
                 achievements.classList.remove('active');
                 achievements.style.maxHeight = '0';
+                achievements.style.padding = '0 20px';
+                
+                // Ensure text is hidden during transition
+                setTimeout(() => {
+                    if (!this.classList.contains('active')) {
+                        achievements.scrollTop = 0;
+                    }
+                }, 400);
             }
         });
     });
@@ -761,6 +849,217 @@ function initExperienceInteractivity() {
             }
         });
     }
+}
+
+// Awards Slider Functionality
+function initAwardsSlider() {
+    const sliderContainer = document.querySelector('.awards-slider-container');
+    if (!sliderContainer) return;
+    
+    const prevBtn = document.querySelector('.prev-arrow');
+    const nextBtn = document.querySelector('.next-arrow');
+    const dotsContainer = document.querySelector('.slider-dots');
+    const slides = document.querySelectorAll('.award-item');
+    
+    if (slides.length === 0) return;
+    
+    // Variables
+    let slideWidth;
+    let currentIndex = 0;
+    let visibleSlides;
+    
+    // Create dots based on number of pages
+    function createDots() {
+        dotsContainer.innerHTML = '';
+        
+        // Determine visible slides based on screen width
+        if (window.innerWidth <= 576) {
+            visibleSlides = 1;
+        } else if (window.innerWidth <= 991) {
+            visibleSlides = 2;
+        } else {
+            visibleSlides = 3;
+        }
+        
+        // Calculate how many pages (dots) we need
+        const numPages = Math.ceil(slides.length / visibleSlides);
+        
+        // Create dots
+        for (let i = 0; i < numPages; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('slider-dot');
+            if (i === 0) dot.classList.add('active');
+            
+            dot.addEventListener('click', () => {
+                goToSlide(i);
+            });
+            
+            dotsContainer.appendChild(dot);
+        }
+    }
+    
+    // Update the slider position
+    function updateSlider() {
+        // Get the current slide width (including gap)
+        slideWidth = slides[0].offsetWidth + 20; // 20px is our gap
+        
+        // Calculate new position
+        const newPosition = -currentIndex * slideWidth * visibleSlides;
+        sliderContainer.style.transform = `translateX(${newPosition}px)`;
+        
+        // Update active dot
+        const dots = document.querySelectorAll('.slider-dot');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentIndex);
+        });
+    }
+    
+    // Go to a specific slide
+    function goToSlide(index) {
+        // Ensure the index is within bounds
+        const numPages = Math.ceil(slides.length / visibleSlides);
+        currentIndex = Math.max(0, Math.min(index, numPages - 1));
+        updateSlider();
+    }
+    
+    // Next slide
+    function nextSlide() {
+        const numPages = Math.ceil(slides.length / visibleSlides);
+        currentIndex = (currentIndex + 1) % numPages;
+        updateSlider();
+    }
+    
+    // Previous slide
+    function prevSlide() {
+        const numPages = Math.ceil(slides.length / visibleSlides);
+        currentIndex = (currentIndex - 1 + numPages) % numPages;
+        updateSlider();
+    }
+    
+    // Add event listeners
+    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+    
+    // Initialize slider
+    createDots();
+    updateSlider();
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        createDots(); // Recreate dots based on new screen size
+        currentIndex = 0; // Reset to first slide
+        updateSlider();
+    });
+    
+    // Touch events for swipe
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    sliderContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+    
+    sliderContainer.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+    
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        if (touchStartX - touchEndX > swipeThreshold) {
+            nextSlide(); // Swipe left means next slide
+        } else if (touchEndX - touchStartX > swipeThreshold) {
+            prevSlide(); // Swipe right means previous slide
+        }
+    }
+}
+
+// Initialize Dark-themed Leaflet Map
+function initDarkLeafletMap() {
+    const mapElement = document.getElementById('leaflet-map');
+    if (!mapElement) return;
+    
+    // Melbourne Central coordinates
+    const melbourneCentral = [-37.8110, 144.9626];
+    
+    // Initialize map
+    const map = L.map('leaflet-map', {
+        center: melbourneCentral,
+        zoom: 13,
+        zoomControl: false, // We'll add it in a better position
+        attributionControl: false // We'll add it back in a better position
+    });
+    
+    // Add zoom control to the top right
+    L.control.zoom({
+        position: 'topright'
+    }).addTo(map);
+    
+    // Add attribution control to the bottom right
+    L.control.attribution({
+        position: 'bottomright',
+        prefix: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    
+    // Dark theme map from CartoDB
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    }).addTo(map);
+    
+    // Create custom marker
+    const customMarkerIcon = L.divIcon({
+        className: 'custom-map-marker',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
+    });
+    
+    // Add marker for Melbourne Central
+    const marker = L.marker(melbourneCentral, {
+        icon: customMarkerIcon
+    }).addTo(map);
+    
+    // Add a pulsing circle around the marker
+    const pulsingCircle = L.circleMarker(melbourneCentral, {
+        radius: 30,
+        color: 'rgba(42, 157, 143, 0.4)',
+        fillColor: 'rgba(42, 157, 143, 0.1)',
+        weight: 2,
+        fillOpacity: 0.3
+    }).addTo(map);
+    
+    // Animate the pulsing circle
+    function animateCircle() {
+        const start = 15;
+        const end = 40;
+        const duration = 1500;
+        let step = 0;
+        
+        function animate() {
+            step = (step + 1) % 60;
+            const size = start + (end - start) * Math.abs(Math.sin(step / 60 * Math.PI));
+            pulsingCircle.setRadius(size);
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    }
+    
+    animateCircle();
+    
+    // Add a popup with info
+    marker.bindPopup('<strong>Melbourne, Australia</strong><br>My Current Location', {
+        className: 'custom-popup'
+    });
+    
+    // Refresh map size when tab is shown (fixes Leaflet not rendering properly)
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 400);
+        });
+    });
 }
 
 function initializeDataAnimation() {

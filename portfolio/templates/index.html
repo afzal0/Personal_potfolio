@@ -17,6 +17,11 @@
     <!-- AOS Animation Library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin=""/>
+    
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
@@ -34,6 +39,11 @@
     <!-- GSAP Animation Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -1386,35 +1396,29 @@
             <!-- Technical Skills - Hexagonal Grid -->
             <div class="skills-content">
                 <div id="technical-skills" class="skills-category active">
-                    <div class="hex-grid">
+                    <div class="skills-cards">
                         {% for skill in skills.technical %}
-                        <div class="hex-item" data-aos="zoom-in" data-aos-delay="{{ loop.index * 50 }}">
-                            <div class="hex-content">
-                                <div class="hex-inner" style="--skill-level: {{ skill.level }}%;">
-                                    <h4>{{ skill.name }}</h4>
-                                    <div class="skill-level-indicator">
-                                        <span class="skill-value">{{ skill.level }}%</span>
-                                    </div>
-                                </div>
+                        <div class="skill-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 50 }}">
+                            <div class="skill-icon">
+                                <i class="fas fa-{{ skill.icon|default('code') }}"></i>
                             </div>
+                            <h4>{{ skill.name }}</h4>
+                            <div class="skill-glow"></div>
                         </div>
                         {% endfor %}
                     </div>
                 </div>
                 
-                <!-- Software & Tools Skills - Same Hexagonal Grid -->
+                <!-- Software & Tools Skills -->
                 <div id="software-skills" class="skills-category">
-                    <div class="hex-grid">
+                    <div class="skills-cards">
                         {% for skill in skills.software %}
-                        <div class="hex-item" data-aos="zoom-in" data-aos-delay="{{ loop.index * 50 }}">
-                            <div class="hex-content">
-                                <div class="hex-inner" style="--skill-level: {{ skill.level }}%;">
-                                    <h4>{{ skill.name }}</h4>
-                                    <div class="skill-level-indicator">
-                                        <span class="skill-value">{{ skill.level }}%</span>
-                                    </div>
-                                </div>
+                        <div class="skill-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 50 }}">
+                            <div class="skill-icon">
+                                <i class="fas fa-{{ skill.icon|default('laptop-code') }}"></i>
                             </div>
+                            <h4>{{ skill.name }}</h4>
+                            <div class="skill-glow"></div>
                         </div>
                         {% endfor %}
                     </div>
@@ -1586,16 +1590,23 @@
         <div class="container">
             <h2>Honors & Awards</h2>
             
-            <div class="awards-grid">
-                {% for award in awards %}
-                <div class="award-item" data-aos="fade-up">
-                    <div class="award-icon"><i class="fas fa-award"></i></div>
-                    <h3>{{ award.title }}</h3>
-                    <div class="award-year">{{ award.year }}</div>
-                    <div class="award-org">{{ award.organization }}</div>
-                    <p>{{ award.description }}</p>
+            <div class="awards-slider">
+                <div class="awards-slider-container">
+                    {% for award in awards %}
+                    <div class="award-item" data-aos="fade-up">
+                        <div class="award-icon"><i class="fas fa-award"></i></div>
+                        <h3>{{ award.title }}</h3>
+                        <div class="award-year">{{ award.year }}</div>
+                        <div class="award-org">{{ award.organization }}</div>
+                        <p>{{ award.description }}</p>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
+                <div class="slider-controls">
+                    <button class="slider-arrow prev-arrow"><i class="fas fa-chevron-left"></i></button>
+                    <div class="slider-dots"></div>
+                    <button class="slider-arrow next-arrow"><i class="fas fa-chevron-right"></i></button>
+                </div>
             </div>
         </div>
     </section>
@@ -1631,7 +1642,7 @@
                         </div>
                         <div class="contact-details">
                             <h4>Email:</h4>
-                            <p>contact@afzalkhan.com</p>
+                            <p>fzlkhan0@gmail.com</p>
                         </div>
                     </div>
                     
@@ -1676,9 +1687,8 @@
                 </div>
             </div>
             
-            <div class="map" data-aos="zoom-in">
-                <!-- Placeholder for map or embed your Google Maps -->
-                <img src="{{ url_for('static', filename='images/map-placeholder.jpg') }}" alt="Location Map">
+            <div class="map-container" data-aos="zoom-in">
+                <div id="leaflet-map"></div>
             </div>
         </div>
     </section>
@@ -1711,7 +1721,7 @@
                 
                 <div class="footer-contact">
                     <h3>Contact Info</h3>
-                    <p><i class="fas fa-envelope"></i> contact@afzalkhan.com</p>
+                    <p><i class="fas fa-envelope"></i> fzlkhan0@gmail.com</p>
                     <p><i class="fab fa-linkedin"></i> linkedin.com/in/afzu0</p>
                     <p><i class="fas fa-map-marker-alt"></i> Melbourne, Australia</p>
                 </div>
