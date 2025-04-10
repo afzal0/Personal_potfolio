@@ -3,7 +3,7 @@
     "title": "ApplianceSense",
     "description": "AI-powered chatbot for conversational access to appliance manuals, using lightweight language models, FAISS for semantic search, and Tesseract OCR.",
     "technologies": ["FAISS", "Tesseract OCR", "Python", "Flask", "LLM Integration"],
-    "image": "urban_planning.jpg",
+    "image": "applisense.png",
     "github": "https://github.com/afzal0",
     "demo": "#"
   },
@@ -11,7 +11,7 @@
     "title": "PropIntel",
     "description": "Property management platform automating data ingestion with interactive dashboards for real-time insights into expenses and maintenance tasks.",
     "technologies": ["Python", "Flask", "PostgreSQL", "Chart.js", "ETL"],
-    "image": "transportation.jpg",
+    "image": "prop-intel.png",
     "github": "https://github.com/afzal0",
     "demo": "#"
   },
@@ -19,7 +19,7 @@
     "title": "Meteorological Drivers of Influenza",
     "description": "Analysis of influenza cases alongside climate data using Spatial Bayesian Distributed Lag Non-Linear Models to quantify climate-influenza relationships.",
     "technologies": ["R", "Bayesian Statistics", "Spatial Analysis", "R Shiny"],
-    "image": "environmental_monitoring.jpg",
+    "image": "influenza.png",
     "github": "https://github.com/afzal0",
     "demo": "#"
   },
@@ -27,7 +27,15 @@
     "title": "Salmonella & Climate Patterns",
     "description": "32-year study investigating correlations between temperature, rainfall, floods, and Salmonella outbreaks using Bayesian spatiotemporal methods.",
     "technologies": ["R", "Bayesian Models", "GIS", "Climate Data Analysis"],
-    "image": "climate_change.jpg",
+    "image": "salmonella.png",
+    "github": "https://github.com/afzal0",
+    "demo": "#"
+  },
+  {
+    "title": "Ethnic Evolution: Mapping Victoria’s Demographic Transitions",
+    "description": "An interactive Shiny dashboard visualizing two decades of migration-driven demographic changes in Victoria, Australia. Combines choropleth maps, Sankey diagrams, clustering, and heatmaps to highlight how ethnic communities shift over time and across LGAs.",
+    "technologies": ["R", "Shiny", "Leaflet", "Plotly", "GIS", "Data Wrangling"],
+    "image": "migration_dash.png",
     "github": "https://github.com/afzal0",
     "demo": "#"
   }
