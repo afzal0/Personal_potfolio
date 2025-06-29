@@ -202,6 +202,10 @@ def project_details():
 def contact():
     return render_template('contact.html')
 
+@app.route('/loading')
+def loading():
+    return render_template('loading.html')
+
 if __name__ == '__main__':
     # Make sure data directory exists
     data_dir = os.path.join(os.path.dirname(__file__), "data")

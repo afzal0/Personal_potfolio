@@ -1,0 +1,3062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading - Afzal Khan</title>
+    <!-- Lottie Animations -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    
+    <!-- Anime.js for advanced animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <!-- Particles.js for background effects -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap');
+        
+        :root {
+            --primary-color: #2a9d8f;
+            --secondary-color: #264653;
+            --accent-color: #e9c46a;
+            --dark-bg: #0a0a0a;
+            --grid-color: rgba(42, 157, 143, 0.3);
+            --glow-color: #00ffaa;
+            --data-blue: #4a90e2;
+            --data-orange: #f5a623;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark-bg);
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+        }
+        
+        /* Animated Background Grid */
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(42, 157, 143, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(42, 157, 143, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: 1;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        /* Neural Network Animation */
+        .neural-network {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+        
+        .node {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--glow-color);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--glow-color);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .connection {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            transform-origin: left center;
+            animation: dataFlow 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+        
+        @keyframes dataFlow {
+            0% { opacity: 0; transform: scaleX(0); }
+            50% { opacity: 1; transform: scaleX(1); }
+            100% { opacity: 0; transform: scaleX(0); }
+        }
+        
+        /* Loading Container */
+        .loading-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        
+        /* Logo Animation */
+        .logo-container {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary-color), var(--glow-color), var(--accent-color));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite, textGlow 2s ease-in-out infinite;
+            position: relative;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes textGlow {
+            0%, 100% { 
+                filter: drop-shadow(0 0 20px rgba(42, 157, 143, 0.8));
+            }
+            50% { 
+                filter: drop-shadow(0 0 30px rgba(0, 255, 170, 1));
+            }
+        }
+        
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background: linear-gradient(45deg, transparent, rgba(42, 157, 143, 0.1), transparent);
+            border-radius: 10px;
+            z-index: -1;
+            animation: rotate 6s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Title and Subtitle */
+        .title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--primary-color), white, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInFromLeft 1s ease-out;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            animation: slideInFromRight 1s ease-out 0.3s both;
+        }
+        
+        @keyframes slideInFromLeft {
+            0% { transform: translateX(-100px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideInFromRight {
+            0% { transform: translateX(100px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            width: 400px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            position: relative;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--glow-color), var(--accent-color));
+            width: 0%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            animation: shine 2s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        @keyframes fadeInUp {
+            0% { transform: translateY(30px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Loading Text */
+        .loading-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            color: var(--glow-color);
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out 0.9s both;
+        }
+        
+        .loading-percentage {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            animation: fadeInUp 1s ease-out 1.2s both;
+        }
+        
+        /* Story Text */
+        .story-container {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+        
+        .story-text {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        /* Floating Elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+        
+        .floating-element {
+            position: absolute;
+            opacity: 0.6;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .satellite {
+            top: 10%;
+            right: 15%;
+            font-size: 2rem;
+            color: var(--accent-color);
+            animation-delay: 0s;
+        }
+        
+        .database {
+            top: 20%;
+            left: 10%;
+            font-size: 1.8rem;
+            color: var(--data-blue);
+            animation-delay: 2s;
+        }
+        
+        .chart {
+            bottom: 25%;
+            right: 20%;
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            animation-delay: 4s;
+        }
+        
+        .globe {
+            bottom: 30%;
+            left: 15%;
+            font-size: 2.5rem;
+            color: var(--glow-color);
+            animation-delay: 1s;
+        }
+        
+        .code {
+            top: 60%;
+            right: 10%;
+            font-size: 1.5rem;
+            color: var(--data-orange);
+            animation-delay: 3s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 1;
+            }
+        }
+        
+        /* Data Streams */
+        .data-stream {
+            position: absolute;
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            animation: streamFlow 4s linear infinite;
+        }
+        
+        .stream-1 {
+            top: 30%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+        
+        .stream-2 {
+            top: 50%;
+            right: 25%;
+            animation-delay: 1s;
+        }
+        
+        .stream-3 {
+            bottom: 40%;
+            left: 30%;
+            animation-delay: 2s;
+        }
+        
+        @keyframes streamFlow {
+            0% {
+                opacity: 0;
+                transform: translateX(-100px) scaleX(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateX(0) scaleX(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(100px) scaleX(0);
+            }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .title {
+                font-size: 1.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .progress-container {
+                width: 300px;
+            }
+            
+            .story-container {
+                width: 90%;
+                bottom: 15%;
+            }
+            
+            .story-text {
+                font-size: 0.9rem;
+            }
+            
+            .floating-element {
+                font-size: 1.5rem !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .progress-container {
+                width: 250px;
+            }
+            
+            .floating-element {
+                font-size: 1.2rem !important;
+            }
+        }
+        
+        /* Advanced GIS/Data Science Visual Elements */
+        
+        /* Satellite Constellation */
+        .satellite-system {
+            position: absolute;
+            top: 10%;
+            right: 15%;
+            width: 300px;
+            height: 300px;
+        }
+        
+        .satellite {
+            position: absolute;
+            width: 40px;
+            height: 25px;
+            animation: satelliteOrbit 15s linear infinite;
+        }
+        
+        .sat-1 {
+            top: 20%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+        
+        .sat-2 {
+            top: 60%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+        
+        .sat-3 {
+            bottom: 30%;
+            left: 40%;
+            animation-delay: -10s;
+        }
+        
+        .sat-body {
+            width: 20px;
+            height: 15px;
+            background: linear-gradient(45deg, #4a90e2, #7b68ee);
+            border-radius: 3px;
+            position: relative;
+            box-shadow: 0 0 15px rgba(74, 144, 226, 0.6);
+        }
+        
+        .sat-panel {
+            position: absolute;
+            width: 15px;
+            height: 8px;
+            background: linear-gradient(90deg, #ffd700, #ffed4e);
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .sat-panel.left {
+            left: -12px;
+        }
+        
+        .sat-panel.right {
+            right: -12px;
+        }
+        
+        .sat-signal {
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 3px;
+            background: var(--glow-color);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--glow-color);
+            animation: signalPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes satelliteOrbit {
+            0% {
+                transform: rotate(0deg) translateX(80px) rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg) translateX(80px) rotate(-360deg);
+            }
+        }
+        
+        @keyframes signalPulse {
+            0%, 100% {
+                opacity: 0.3;
+                transform: translateX(-50%) scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1.5);
+            }
+        }
+        
+        /* Data Pipeline Visualization */
+        .data-pipeline {
+            position: absolute;
+            bottom: 20%;
+            left: 10%;
+            width: 400px;
+            height: 100px;
+        }
+        
+        .pipeline-node {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+        }
+        
+        .node-1 {
+            left: 0;
+            top: 20px;
+        }
+        
+        .node-2 {
+            left: 170px;
+            top: 0;
+        }
+        
+        .node-3 {
+            right: 0;
+            top: 30px;
+        }
+        
+        .node-core {
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, var(--data-blue), #2c5aa0);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.7);
+            animation: nodeProcess 3s ease-in-out infinite;
+        }
+        
+        .node-rings {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(74, 144, 226, 0.3);
+            border-radius: 50%;
+            animation: ringExpand 2s ease-out infinite;
+        }
+        
+        .node-rings::before,
+        .node-rings::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(74, 144, 226, 0.2);
+            border-radius: 50%;
+        }
+        
+        .node-rings::before {
+            width: 70px;
+            height: 70px;
+            animation: ringExpand 2s ease-out infinite 0.5s;
+        }
+        
+        .node-rings::after {
+            width: 90px;
+            height: 90px;
+            animation: ringExpand 2s ease-out infinite 1s;
+        }
+        
+        .pipeline-connection {
+            position: absolute;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--data-blue), transparent);
+            top: 50%;
+            transform: translateY(-50%);
+            animation: dataTransfer 4s ease-in-out infinite;
+        }
+        
+        .conn-1 {
+            left: 60px;
+            width: 110px;
+            animation-delay: 1s;
+        }
+        
+        .conn-2 {
+            left: 230px;
+            width: 110px;
+            animation-delay: 2s;
+        }
+        
+        @keyframes nodeProcess {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 20px rgba(74, 144, 226, 0.7);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                box-shadow: 0 0 30px rgba(74, 144, 226, 1);
+            }
+        }
+        
+        @keyframes ringExpand {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes dataTransfer {
+            0% {
+                background-position: -100% 0;
+            }
+            100% {
+                background-position: 100% 0;
+            }
+        }
+        
+        /* Spatial Analysis Grid */
+        .spatial-grid {
+            position: absolute;
+            top: 15%;
+            left: 10%;
+            width: 180px;
+            height: 120px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .grid-cell {
+            background: rgba(74, 144, 226, 0.2);
+            border: 1px solid rgba(74, 144, 226, 0.4);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            animation: cellAnalyze 4s ease-in-out infinite;
+        }
+        
+        .grid-cell.active {
+            background: rgba(42, 157, 143, 0.4);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(42, 157, 143, 0.5);
+        }
+        
+        .grid-cell::after {
+            content: attr(data-value);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
+            color: white;
+            font-weight: bold;
+            opacity: 0;
+            animation: valueDisplay 4s ease-in-out infinite;
+        }
+        
+        @keyframes cellAnalyze {
+            0%, 100% {
+                opacity: 0.6;
+            }
+            25%, 75% {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes valueDisplay {
+            0%, 70%, 100% {
+                opacity: 0;
+            }
+            85% {
+                opacity: 1;
+            }
+        }
+        
+        /* Geographic Coordinate System */
+        .coordinate-system {
+            position: absolute;
+            top: 50%;
+            right: 5%;
+            width: 200px;
+            height: 150px;
+            transform: translateY(-50%);
+        }
+        
+        .coordinate-line {
+            position: absolute;
+            background: rgba(233, 196, 106, 0.6);
+            box-shadow: 0 0 10px rgba(233, 196, 106, 0.4);
+        }
+        
+        .lat-line {
+            width: 100%;
+            height: 1px;
+            top: 50%;
+            animation: coordPulse 3s ease-in-out infinite;
+        }
+        
+        .lon-line {
+            height: 100%;
+            width: 1px;
+            left: 50%;
+            animation: coordPulse 3s ease-in-out infinite 1.5s;
+        }
+        
+        .coordinate-marker {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(233, 196, 106, 0.8);
+        }
+        
+        .marker-1 {
+            top: 30%;
+            left: 20%;
+            animation: markerBlink 2s ease-in-out infinite;
+        }
+        
+        .marker-2 {
+            bottom: 30%;
+            right: 20%;
+            animation: markerBlink 2s ease-in-out infinite 1s;
+        }
+        
+        .coord-text {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: var(--accent-color);
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        
+        @keyframes coordPulse {
+            0%, 100% {
+                opacity: 0.4;
+                box-shadow: 0 0 10px rgba(233, 196, 106, 0.4);
+            }
+            50% {
+                opacity: 1;
+                box-shadow: 0 0 20px rgba(233, 196, 106, 0.8);
+            }
+        }
+        
+        @keyframes markerBlink {
+            0%, 100% {
+                opacity: 0.7;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.3);
+            }
+        }
+        
+        /* Enhanced Data Packets */
+        .advanced-data-streams {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .data-packet {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--glow-color);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--glow-color);
+            animation: packetFlow 6s linear infinite;
+        }
+        
+        .packet-1 {
+            top: 25%;
+            left: 0;
+            animation-delay: 0s;
+        }
+        
+        .packet-2 {
+            top: 45%;
+            left: 0;
+            animation-delay: 1.5s;
+        }
+        
+        .packet-3 {
+            top: 65%;
+            left: 0;
+            animation-delay: 3s;
+        }
+        
+        .packet-4 {
+            top: 85%;
+            left: 0;
+            animation-delay: 4.5s;
+        }
+        
+        @keyframes packetFlow {
+            0% {
+                left: 0;
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                left: 100%;
+                opacity: 0;
+            }
+        }
+        
+        /* Python Code Stream Animation */
+        .code-stream {
+            position: absolute;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: rgba(0, 255, 170, 0.6);
+            white-space: nowrap;
+            animation: codeScroll 15s linear infinite;
+            z-index: 1;
+        }
+        
+        .code-stream-1 {
+            top: 10%;
+            left: -100%;
+            animation-delay: 0s;
+        }
+        
+        .code-stream-2 {
+            top: 30%;
+            left: -100%;
+            animation-delay: 3s;
+        }
+        
+        .code-stream-3 {
+            top: 70%;
+            left: -100%;
+            animation-delay: 6s;
+        }
+        
+        .code-stream-4 {
+            top: 90%;
+            left: -100%;
+            animation-delay: 9s;
+        }
+        
+        @keyframes codeScroll {
+            0% {
+                left: -100%;
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                left: 100%;
+                opacity: 0;
+            }
+        }
+        
+        /* Advanced ETL Pipeline Animation */
+        .etl-pipeline {
+            position: absolute;
+            top: 55%;
+            right: 8%;
+            width: 320px;
+            height: 120px;
+        }
+        
+        .etl-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .etl-stage {
+            position: absolute;
+            width: 80px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .extract {
+            left: 0;
+            top: 10px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            animation: etlExtract 6s ease-in-out infinite;
+        }
+        
+        .transform {
+            left: 120px;
+            top: 35px;
+            background: linear-gradient(135deg, #4834d4, #686de0);
+            animation: etlTransform 6s ease-in-out infinite 2s;
+        }
+        
+        .load {
+            right: 0;
+            top: 10px;
+            background: linear-gradient(135deg, #00d2d3, #01a3a4);
+            animation: etlLoad 6s ease-in-out infinite 4s;
+        }
+        
+        .etl-stage::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: etlSweep 6s ease-in-out infinite;
+        }
+        
+        .extract::before { animation-delay: 0s; }
+        .transform::before { animation-delay: 2s; }
+        .load::before { animation-delay: 4s; }
+        
+        .etl-icon {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+        
+        .etl-text {
+            font-size: 8px;
+            opacity: 0.9;
+        }
+        
+        .etl-connection {
+            position: absolute;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--glow-color));
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .conn-1 {
+            left: 80px;
+            top: 35px;
+            width: 40px;
+            animation: dataFlow1 6s ease-in-out infinite;
+        }
+        
+        .conn-2 {
+            right: 80px;
+            top: 35px;
+            width: 40px;
+            animation: dataFlow2 6s ease-in-out infinite 2s;
+        }
+        
+        .etl-connection::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+            animation: connectionFlow 2s ease-in-out infinite;
+        }
+        
+        .conn-1::after { animation-delay: 1s; }
+        .conn-2::after { animation-delay: 3s; }
+        
+        .etl-data-points {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .data-point {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--glow-color);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--glow-color);
+        }
+        
+        .point-1 {
+            left: 40px;
+            top: 37px;
+            animation: pointMove1 6s ease-in-out infinite;
+        }
+        
+        .point-2 {
+            left: 160px;
+            top: 37px;
+            animation: pointMove2 6s ease-in-out infinite 2s;
+        }
+        
+        @keyframes etlExtract {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3); }
+            16% { transform: scale(1.05); box-shadow: 0 6px 25px rgba(255, 107, 107, 0.6); }
+        }
+        
+        @keyframes etlTransform {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(72, 52, 212, 0.3); }
+            33% { transform: scale(1.05); box-shadow: 0 6px 25px rgba(72, 52, 212, 0.6); }
+        }
+        
+        @keyframes etlLoad {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(0, 210, 211, 0.3); }
+            66% { transform: scale(1.05); box-shadow: 0 6px 25px rgba(0, 210, 211, 0.6); }
+        }
+        
+        @keyframes etlSweep {
+            0%, 90%, 100% { left: -100%; }
+            10%, 80% { left: 100%; }
+        }
+        
+        @keyframes dataFlow1 {
+            0%, 15%, 100% { opacity: 0; transform: scaleX(0); }
+            16%, 32% { opacity: 1; transform: scaleX(1); }
+        }
+        
+        @keyframes dataFlow2 {
+            0%, 33%, 100% { opacity: 0; transform: scaleX(0); }
+            34%, 50% { opacity: 1; transform: scaleX(1); }
+        }
+        
+        @keyframes connectionFlow {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        @keyframes pointMove1 {
+            0%, 15% { left: 40px; opacity: 0; }
+            16% { opacity: 1; }
+            32% { left: 160px; opacity: 1; }
+            33%, 100% { left: 160px; opacity: 0; }
+        }
+        
+        @keyframes pointMove2 {
+            0%, 33% { left: 160px; opacity: 0; }
+            34% { opacity: 1; }
+            50% { left: 280px; opacity: 1; }
+            51%, 100% { left: 280px; opacity: 0; }
+        }
+        
+        /* Floating Chart Animations */
+        .floating-charts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .chart-element {
+            position: absolute;
+            animation: chartFloat 12s ease-in-out infinite;
+        }
+        
+        .bar-chart {
+            top: 15%;
+            right: 25%;
+            width: 40px;
+            height: 30px;
+            animation-delay: 0s;
+        }
+        
+        .pie-chart {
+            bottom: 35%;
+            left: 5%;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary-color) 0deg 120deg, var(--accent-color) 120deg 240deg, var(--data-blue) 240deg 360deg);
+            animation-delay: 2s;
+        }
+        
+        .line-chart {
+            top: 40%;
+            left: 60%;
+            width: 50px;
+            height: 25px;
+            animation-delay: 4s;
+        }
+        
+        .chart-bars {
+            display: flex;
+            align-items: end;
+            height: 100%;
+            gap: 2px;
+        }
+        
+        .bar {
+            background: var(--primary-color);
+            width: 6px;
+            animation: barGrow 2s ease-in-out infinite;
+        }
+        
+        .bar-1 { height: 60%; animation-delay: 0s; }
+        .bar-2 { height: 80%; animation-delay: 0.2s; }
+        .bar-3 { height: 45%; animation-delay: 0.4s; }
+        .bar-4 { height: 90%; animation-delay: 0.6s; }
+        .bar-5 { height: 70%; animation-delay: 0.8s; }
+        
+        .line-path {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .line-path::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--glow-color);
+            border-radius: 50%;
+            top: -3px;
+            animation: lineDot 3s ease-in-out infinite;
+        }
+        
+        @keyframes chartFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(-15px) rotate(5deg);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes barGrow {
+            0%, 100% {
+                transform: scaleY(0.8);
+            }
+            50% {
+                transform: scaleY(1.2);
+            }
+        }
+        
+        @keyframes lineDot {
+            0% {
+                left: 0;
+            }
+            100% {
+                left: calc(100% - 8px);
+            }
+        }
+        
+        /* Additional Satellite Trails */
+        .satellite-trails {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .satellite-trail {
+            position: absolute;
+            width: 2px;
+            height: 150px;
+            background: linear-gradient(180deg, transparent, rgba(255, 215, 0, 0.6), transparent);
+            animation: trailMove 8s linear infinite;
+        }
+        
+        .trail-1 {
+            top: 5%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+        
+        .trail-2 {
+            top: 15%;
+            right: 30%;
+            animation-delay: 2s;
+        }
+        
+        .trail-3 {
+            bottom: 25%;
+            left: 70%;
+            animation-delay: 4s;
+        }
+        
+        @keyframes trailMove {
+            0% {
+                transform: translateY(-200px) rotate(45deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(calc(100vh + 200px)) rotate(45deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Data Analysis Indicators */
+        .analysis-indicators {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .analysis-circle {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 2px solid rgba(42, 157, 143, 0.4);
+            border-radius: 50%;
+            animation: analysisPulse 3s ease-in-out infinite;
+        }
+        
+        .analysis-1 {
+            top: 25%;
+            left: 80%;
+            animation-delay: 0s;
+        }
+        
+        .analysis-2 {
+            bottom: 20%;
+            right: 15%;
+            animation-delay: 1s;
+        }
+        
+        .analysis-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+        
+        @keyframes analysisPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 1;
+            }
+        }
+        
+        /* Floating Tech Icons */
+        .tech-icons {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .tech-icon {
+            position: absolute;
+            font-size: 20px;
+            animation: techFloat 10s ease-in-out infinite;
+            opacity: 0.6;
+        }
+        
+        .python-icon {
+            top: 20%;
+            left: 5%;
+            color: #3776ab;
+            animation-delay: 0s;
+        }
+        
+        .database-icon {
+            top: 50%;
+            right: 5%;
+            color: var(--data-blue);
+            animation-delay: 2s;
+        }
+        
+        .cloud-icon {
+            bottom: 30%;
+            left: 25%;
+            color: var(--accent-color);
+            animation-delay: 4s;
+        }
+        
+        .chart-icon {
+            top: 70%;
+            right: 40%;
+            color: var(--primary-color);
+            animation-delay: 6s;
+        }
+        
+        @keyframes techFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.6;
+            }
+            25% {
+                transform: translateY(-10px) rotate(90deg);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 1;
+            }
+            75% {
+                transform: translateY(-10px) rotate(270deg);
+                opacity: 0.8;
+            }
+        }
+        
+        /* Advanced GIS Mapping Animation */
+        .gis-map-container {
+            position: absolute;
+            bottom: 15%;
+            left: 8%;
+            width: 200px;
+            height: 120px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 10px;
+            border: 2px solid rgba(42, 157, 143, 0.3);
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .map-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(42, 157, 143, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(42, 157, 143, 0.2) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: mapGridMove 8s linear infinite;
+        }
+        
+        .map-layers {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .map-layer {
+            position: absolute;
+            border-radius: 50%;
+            animation: mapLayerPulse 3s ease-in-out infinite;
+        }
+        
+        .layer-1 {
+            top: 20%;
+            left: 25%;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, #ff6b6b, #ee5a24);
+            animation-delay: 0s;
+        }
+        
+        .layer-2 {
+            top: 60%;
+            left: 60%;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #4834d4, #686de0);
+            animation-delay: 1s;
+        }
+        
+        .layer-3 {
+            top: 40%;
+            left: 75%;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, #00d2d3, #01a3a4);
+            animation-delay: 2s;
+        }
+        
+        .map-connections {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .map-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glow-color), transparent);
+            animation: mapLineFlow 4s ease-in-out infinite;
+        }
+        
+        .line-1 {
+            top: 30%;
+            left: 37%;
+            width: 35px;
+            transform: rotate(25deg);
+            animation-delay: 0s;
+        }
+        
+        .line-2 {
+            top: 50%;
+            left: 65%;
+            width: 25px;
+            transform: rotate(-45deg);
+            animation-delay: 1.5s;
+        }
+        
+        @keyframes mapGridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(20px, 20px); }
+        }
+        
+        @keyframes mapLayerPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 10px currentColor;
+            }
+            50% {
+                transform: scale(1.3);
+                box-shadow: 0 0 20px currentColor;
+            }
+        }
+        
+        @keyframes mapLineFlow {
+            0%, 100% {
+                opacity: 0;
+                transform: scaleX(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+        }
+        
+        /* Expanded Database Query Container - Top Right */
+        .database-query-container {
+            position: absolute;
+            top: 8%;
+            right: 5%;
+            width: 400px;
+            height: 280px;
+            background: linear-gradient(135deg, rgba(15, 25, 35, 0.95), rgba(25, 35, 45, 0.95));
+            border-radius: 12px;
+            border-left: 6px solid rgba(74, 144, 226, 0.9);
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            z-index: 7;
+            overflow: hidden;
+        }
+        
+        .query-header {
+            color: rgba(74, 144, 226, 0.9);
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 16px;
+            border-bottom: 2px solid rgba(74, 144, 226, 0.4);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .query-header::before {
+            content: '🗃️';
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .query-content {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            height: calc(100% - 90px);
+            overflow-y: auto;
+        }
+        
+        .query-line {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #2ecc71;
+            margin-bottom: 4px;
+            opacity: 0;
+            animation: queryTypewriter 10s ease-in-out infinite;
+        }
+        
+        .query-keyword { color: rgba(255, 121, 198, 0.9); font-weight: bold; }
+        .query-function { color: rgba(80, 250, 123, 0.9); }
+        .query-string { color: rgba(241, 250, 140, 0.9); }
+        .query-table { color: rgba(139, 233, 253, 0.9); }
+        .query-operator { color: rgba(255, 184, 108, 0.9); }
+        
+        .query-line:nth-child(1) { animation-delay: 0s; }
+        .query-line:nth-child(2) { animation-delay: 0.3s; }
+        .query-line:nth-child(3) { animation-delay: 0.6s; }
+        .query-line:nth-child(4) { animation-delay: 0.9s; }
+        .query-line:nth-child(5) { animation-delay: 1.2s; }
+        .query-line:nth-child(6) { animation-delay: 1.5s; }
+        .query-line:nth-child(7) { animation-delay: 1.8s; }
+        .query-line:nth-child(8) { animation-delay: 2.1s; }
+        .query-line:nth-child(9) { animation-delay: 2.4s; }
+        .query-line:nth-child(10) { animation-delay: 2.7s; }
+        .query-line:nth-child(11) { animation-delay: 3.0s; }
+        .query-line:nth-child(12) { animation-delay: 3.3s; }
+        .query-line:nth-child(13) { animation-delay: 3.6s; }
+        .query-line:nth-child(14) { animation-delay: 3.9s; }
+        .query-line:nth-child(15) { animation-delay: 4.2s; }
+        
+        .query-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 12px;
+            background: #2ecc71;
+            animation: cursorBlink 1s infinite;
+        }
+        
+        .query-results {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            right: 20px;
+            color: rgba(46, 204, 113, 0.9);
+            font-size: 12px;
+            font-weight: bold;
+            padding: 8px;
+            background: rgba(46, 204, 113, 0.1);
+            border-radius: 4px;
+            border-left: 3px solid rgba(46, 204, 113, 0.6);
+        }
+        
+        .query-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .database-query-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.1), transparent);
+            animation: dbPulse 3s linear infinite;
+        }
+        
+        @keyframes queryTypewriter {
+            0%, 10% { opacity: 0; transform: translateX(-10px); }
+            15%, 85% { opacity: 1; transform: translateX(0); }
+            90%, 100% { opacity: 0; transform: translateX(10px); }
+        }
+        
+        @keyframes cursorBlink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        @keyframes dbPulse {
+            0% { right: -100%; }
+            100% { right: 100%; }
+        }
+        
+        /* Statistical Analysis Container - Bottom Right */
+        .statistical-analysis-container {
+            position: absolute;
+            bottom: 5%;
+            right: 5%;
+            width: 380px;
+            height: 250px;
+            background: linear-gradient(135deg, rgba(45, 35, 65, 0.95), rgba(55, 45, 75, 0.95));
+            border-radius: 12px;
+            border-left: 6px solid rgba(156, 39, 176, 0.9);
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            z-index: 6;
+            overflow: hidden;
+        }
+        
+        .stats-header {
+            color: rgba(156, 39, 176, 0.9);
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 16px;
+            border-bottom: 2px solid rgba(156, 39, 176, 0.4);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .stats-header::before {
+            content: '📊';
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .stats-content {
+            line-height: 1.6;
+            font-size: 12px;
+            height: calc(100% - 60px);
+            overflow-y: auto;
+        }
+        
+        .stats-line {
+            color: #ff6b9d;
+            margin-bottom: 3px;
+            opacity: 0;
+            animation: statsReveal 14s ease-in-out infinite;
+        }
+        
+        .stats-line.comment { color: rgba(108, 117, 125, 0.8); }
+        .stats-line.library { color: rgba(255, 193, 7, 0.9); font-weight: bold; }
+        .stats-line.function { color: rgba(40, 167, 69, 0.9); }
+        .stats-line.variable { color: rgba(23, 162, 184, 0.9); }
+        .stats-line.string { color: rgba(220, 53, 69, 0.9); }
+        .stats-line.number { color: rgba(253, 126, 20, 0.9); }
+        .stats-line.operator { color: rgba(108, 117, 125, 0.9); }
+        
+        .stats-line:nth-child(1) { animation-delay: 0s; }
+        .stats-line:nth-child(2) { animation-delay: 0.4s; }
+        .stats-line:nth-child(3) { animation-delay: 0.8s; }
+        .stats-line:nth-child(4) { animation-delay: 1.2s; }
+        .stats-line:nth-child(5) { animation-delay: 1.6s; }
+        .stats-line:nth-child(6) { animation-delay: 2.0s; }
+        .stats-line:nth-child(7) { animation-delay: 2.4s; }
+        .stats-line:nth-child(8) { animation-delay: 2.8s; }
+        .stats-line:nth-child(9) { animation-delay: 3.2s; }
+        .stats-line:nth-child(10) { animation-delay: 3.6s; }
+        .stats-line:nth-child(11) { animation-delay: 4.0s; }
+        .stats-line:nth-child(12) { animation-delay: 4.4s; }
+        .stats-line:nth-child(13) { animation-delay: 4.8s; }
+        .stats-line:nth-child(14) { animation-delay: 5.2s; }
+        .stats-line:nth-child(15) { animation-delay: 5.6s; }
+        .stats-line:nth-child(16) { animation-delay: 6.0s; }
+        .stats-line:nth-child(17) { animation-delay: 6.4s; }
+        .stats-line:nth-child(18) { animation-delay: 6.8s; }
+        
+        .statistical-analysis-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(156, 39, 176, 0.1), transparent);
+            animation: statsScan 5s linear infinite;
+        }
+        
+        @keyframes statsReveal {
+            0%, 8% { opacity: 0; transform: translateX(-15px); }
+            12%, 88% { opacity: 1; transform: translateX(0); }
+            92%, 100% { opacity: 0; transform: translateX(15px); }
+        }
+        
+        @keyframes statsScan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        /* Advanced Satellite Constellation */
+        .satellite-constellation {
+            position: absolute;
+            top: 5%;
+            right: 10%;
+            width: 250px;
+            height: 200px;
+        }
+        
+        .orbit-ring {
+            position: absolute;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 50%;
+            animation: orbitRotate 20s linear infinite;
+        }
+        
+        .orbit-1 {
+            width: 120px;
+            height: 120px;
+            top: 40px;
+            left: 65px;
+            animation-duration: 15s;
+        }
+        
+        .orbit-2 {
+            width: 180px;
+            height: 180px;
+            top: 10px;
+            left: 35px;
+            animation-duration: 25s;
+            animation-direction: reverse;
+        }
+        
+        .orbit-3 {
+            width: 80px;
+            height: 80px;
+            top: 60px;
+            left: 85px;
+            animation-duration: 10s;
+        }
+        
+        .advanced-satellite {
+            position: absolute;
+            width: 16px;
+            height: 12px;
+        }
+        
+        .sat-advanced-1 {
+            top: 50%;
+            left: 0;
+            animation: satelliteAdvancedOrbit1 15s linear infinite;
+        }
+        
+        .sat-advanced-2 {
+            top: 50%;
+            left: 0;
+            animation: satelliteAdvancedOrbit2 25s linear infinite reverse;
+        }
+        
+        .sat-advanced-3 {
+            top: 50%;
+            left: 0;
+            animation: satelliteAdvancedOrbit3 10s linear infinite;
+        }
+        
+        .sat-advanced-body {
+            width: 12px;
+            height: 8px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            border-radius: 2px;
+            position: relative;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.6);
+        }
+        
+        .sat-advanced-panel {
+            position: absolute;
+            width: 8px;
+            height: 4px;
+            background: linear-gradient(90deg, #f1c40f, #f39c12);
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 5px rgba(241, 196, 15, 0.5);
+        }
+        
+        .sat-advanced-panel.left { left: -6px; }
+        .sat-advanced-panel.right { right: -6px; }
+        
+        .sat-advanced-signal {
+            position: absolute;
+            top: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 2px;
+            background: var(--glow-color);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--glow-color);
+            animation: advancedSignalPulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes orbitRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes satelliteAdvancedOrbit1 {
+            0% { transform: rotate(0deg) translateX(60px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(60px) rotate(-360deg); }
+        }
+        
+        @keyframes satelliteAdvancedOrbit2 {
+            0% { transform: rotate(0deg) translateX(90px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(90px) rotate(-360deg); }
+        }
+        
+        @keyframes satelliteAdvancedOrbit3 {
+            0% { transform: rotate(0deg) translateX(40px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
+        }
+        
+        @keyframes advancedSignalPulse {
+            0%, 100% {
+                opacity: 0.4;
+                transform: translateX(-50%) scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1.8);
+            }
+        }
+        
+        /* Expanded Python Code Container - Left Side */
+        .spatial-code-container {
+            position: absolute;
+            top: 20%;
+            left: 5%;
+            width: 450px;
+            height: 350px;
+            background: linear-gradient(135deg, rgba(20, 30, 40, 0.95), rgba(30, 40, 50, 0.95));
+            border-radius: 12px;
+            border-left: 6px solid rgba(42, 157, 143, 0.9);
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            z-index: 8;
+            overflow: hidden;
+        }
+        
+        .code-header {
+            color: rgba(42, 157, 143, 0.9);
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 16px;
+            border-bottom: 2px solid rgba(42, 157, 143, 0.4);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        
+        .code-content {
+            line-height: 1.6;
+            font-size: 13px;
+            height: calc(100% - 60px);
+            overflow-y: auto;
+        }
+        
+        .code-line {
+            color: #00ff88;
+            margin-bottom: 3px;
+            opacity: 0;
+            animation: codeReveal 12s ease-in-out infinite;
+        }
+        
+        .code-line.comment { color: rgba(108, 117, 125, 0.8); }
+        .code-line.keyword { color: rgba(255, 121, 198, 0.9); font-weight: bold; }
+        .code-line.string { color: rgba(241, 250, 140, 0.9); }
+        .code-line.function { color: rgba(80, 250, 123, 0.9); }
+        .code-line.variable { color: rgba(139, 233, 253, 0.9); }
+        .code-line.operator { color: rgba(255, 184, 108, 0.9); }
+        
+        .code-line:nth-child(1) { animation-delay: 0s; }
+        .code-line:nth-child(2) { animation-delay: 0.3s; }
+        .code-line:nth-child(3) { animation-delay: 0.6s; }
+        .code-line:nth-child(4) { animation-delay: 0.9s; }
+        .code-line:nth-child(5) { animation-delay: 1.2s; }
+        .code-line:nth-child(6) { animation-delay: 1.5s; }
+        .code-line:nth-child(7) { animation-delay: 1.8s; }
+        .code-line:nth-child(8) { animation-delay: 2.1s; }
+        .code-line:nth-child(9) { animation-delay: 2.4s; }
+        .code-line:nth-child(10) { animation-delay: 2.7s; }
+        .code-line:nth-child(11) { animation-delay: 3.0s; }
+        .code-line:nth-child(12) { animation-delay: 3.3s; }
+        .code-line:nth-child(13) { animation-delay: 3.6s; }
+        .code-line:nth-child(14) { animation-delay: 3.9s; }
+        .code-line:nth-child(15) { animation-delay: 4.2s; }
+        .code-line:nth-child(16) { animation-delay: 4.5s; }
+        
+        .spatial-code-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(42, 157, 143, 0.1), transparent);
+            animation: spatialScan 4s linear infinite;
+        }
+        
+        @keyframes codeReveal {
+            0%, 10% { opacity: 0; transform: translateX(-20px); }
+            15%, 85% { opacity: 1; transform: translateX(0); }
+            90%, 100% { opacity: 0; transform: translateX(20px); }
+        }
+        
+        @keyframes spatialScan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        
+        /* Tech Icons Animation */
+        .tech-icons-advanced {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 4;
+        }
+        
+        .tech-brand-icon {
+            position: absolute;
+            font-size: 24px;
+            animation: techBrandFloat 8s ease-in-out infinite;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+        
+        .aws-icon {
+            top: 25%;
+            left: 8%;
+            color: #ff9900;
+            animation-delay: 0s;
+        }
+        
+        .azure-icon {
+            top: 55%;
+            right: 12%;
+            color: #0078d4;
+            animation-delay: 1s;
+        }
+        
+        .arcgis-icon {
+            bottom: 40%;
+            left: 25%;
+            color: #2a9d8f;
+            animation-delay: 2s;
+        }
+        
+        .oracle-icon {
+            top: 15%;
+            right: 35%;
+            color: #f80000;
+            animation-delay: 3s;
+        }
+        
+        .postgresql-icon {
+            bottom: 25%;
+            right: 8%;
+            color: #336791;
+            animation-delay: 4s;
+        }
+        
+        .docker-icon {
+            top: 70%;
+            left: 60%;
+            color: #2496ed;
+            animation-delay: 5s;
+        }
+        
+        .kubernetes-icon {
+            bottom: 60%;
+            left: 5%;
+            color: #326ce5;
+            animation-delay: 6s;
+        }
+        
+        .git-icon {
+            top: 35%;
+            right: 5%;
+            color: #f05032;
+            animation-delay: 7s;
+        }
+        
+        @keyframes techBrandFloat {
+            0%, 100% {
+                transform: translateY(0) scale(1) rotate(0deg);
+                opacity: 0.8;
+            }
+            25% {
+                transform: translateY(-15px) scale(1.1) rotate(90deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-25px) scale(1.2) rotate(180deg);
+                opacity: 1;
+            }
+            75% {
+                transform: translateY(-15px) scale(1.1) rotate(270deg);
+                opacity: 1;
+            }
+        }
+        
+        /* Additional Data Visualization */
+        .data-visualization {
+            position: absolute;
+            top: 20%;
+            right: 45%;
+            width: 120px;
+            height: 80px;
+        }
+        
+        .data-flow-vertical {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, var(--primary-color), transparent);
+            animation: verticalDataFlow 3s ease-in-out infinite;
+        }
+        
+        .data-node {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, var(--glow-color), var(--primary-color));
+            border-radius: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: dataNodePulse 2s ease-in-out infinite;
+        }
+        
+        .node-top { top: 10%; animation-delay: 0s; }
+        .node-middle { top: 50%; animation-delay: 0.5s; }
+        .node-bottom { bottom: 10%; animation-delay: 1s; }
+        
+        @keyframes verticalDataFlow {
+            0% { opacity: 0.3; transform: translateX(-50%) scaleY(0.5); }
+            50% { opacity: 1; transform: translateX(-50%) scaleY(1); }
+            100% { opacity: 0.3; transform: translateX(-50%) scaleY(0.5); }
+        }
+        
+        @keyframes dataNodePulse {
+            0%, 100% { transform: translateX(-50%) scale(1); box-shadow: 0 0 10px var(--glow-color); }
+            50% { transform: translateX(-50%) scale(1.3); box-shadow: 0 0 20px var(--glow-color); }
+        }
+        
+        /* Realistic Earth Globe Background */
+        .earth-globe-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            z-index: 0;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .planet-container {
+            border-radius: 50%;
+            box-shadow: 5px -3px 15px 5px rgba(42, 157, 143, 0.8);
+            height: 600px;
+            overflow: hidden;
+            position: relative;
+            width: 600px;
+            z-index: 1;
+        }
+        
+        .night {
+            animation: rotate-night 80s linear infinite;
+            background-image: url('https://www.solarsystemscope.com/textures/download/2k_earth_nightmap.jpg');
+            background-size: 200%;
+            height: 600px;
+            position: absolute;
+            width: 600px;
+            z-index: 2;
+        }
+        
+        .day {
+            animation: rotate-day 80s linear infinite;
+            background-image: url('https://www.solarsystemscope.com/textures/download/2k_earth_daymap.jpg');
+            background-size: 200%;
+            border-left: solid 1px black;
+            border-radius: 50%;
+            box-shadow: 5px 0 25px 12px rgba(4, 6, 21, 0.8) inset; 
+            height: 600px;
+            margin-left: 132px;
+            position: absolute;
+            width: 600px;
+            z-index: 3;
+        }
+        
+        .clouds {
+            animation: rotate-day 50s linear infinite, spin-clouds 100s ease infinite;
+            background-image: url('https://www.solarsystemscope.com/textures/download/2k_earth_clouds.jpg');
+            background-size: 200%;
+            border-radius: 50%;    
+            box-shadow: 5px 0 25px 12px rgba(4, 6, 21, 0.8) inset, -9px 0px 25px 12px rgba(42, 157, 143, 0.4) inset;
+            height: 600px;
+            margin-left: 120px;
+            opacity: 0.45;
+            position: absolute;
+            width: 600px;
+            z-index: 4;
+        }
+        
+        .inner-shadow {
+            background: transparent;
+            border-radius: 50%;
+            box-shadow: -6px 0 12px 2px rgba(42, 157, 143, 0.3) inset, 6px 0 12px 2px rgba(4, 6, 21, 0.8) inset;
+            height: 600px;
+            margin-left: 0;
+            position: absolute;
+            width: 600px;
+            z-index: 5;
+        }
+        
+        @keyframes rotate-day {
+            0% { background-position: 120% 0; }
+            100% { background-position: -80% 0; }
+        }
+        
+        @keyframes rotate-night {
+            0% { background-position: calc(120% + 120px) 0; }
+            100% { background-position: calc(-80% + 120px) 0; }
+        }
+        
+        @keyframes spin-clouds {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(20deg); }
+            100% { transform: rotate(0deg); }
+        }
+        
+        /* Simple Satellite System Around Earth */
+        .earth-satellites {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+        }
+        
+        /* Satellite Orbital Ring */
+        .satellite-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px dashed rgba(42, 157, 143, 0.3);
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Individual Satellite Container */
+        .satellite {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: 0 0;
+            width: 40px;
+            height: 30px;
+        }
+        
+        .satellite-1 {
+            animation: satellite-spin-1 20s linear infinite;
+        }
+        
+        .satellite-2 {
+            animation: satellite-spin-2 25s linear infinite;
+        }
+        
+        .satellite-3 {
+            animation: satellite-spin-3 30s linear infinite;
+        }
+        
+        .satellite-4 {
+            animation: satellite-spin-4 35s linear infinite;
+        }
+        
+        /* Simple Satellite Body */
+        .satellite-body {
+            width: 20px;
+            height: 15px;
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            border-radius: 3px;
+            position: relative;
+            margin: 0 auto;
+            box-shadow: 0 0 15px rgba(52, 73, 94, 0.8);
+        }
+        
+        .satellite-body::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 11px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            border-radius: 2px;
+        }
+        
+        /* Solar Panels */
+        .satellite-panel {
+            position: absolute;
+            width: 15px;
+            height: 10px;
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 10px rgba(241, 196, 15, 0.6);
+        }
+        
+        .satellite-panel.left { left: -12px; }
+        .satellite-panel.right { right: -12px; }
+        
+        /* Antenna */
+        .satellite-antenna {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 10px;
+            background: linear-gradient(180deg, var(--glow-color), #95a5a6);
+        }
+        
+        .satellite-antenna::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 4px;
+            background: var(--glow-color);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--glow-color);
+            animation: satelliteSignalPulse 2s ease-in-out infinite;
+        }
+        
+        /* Simple Satellite Spin Animations */
+        @keyframes satellite-spin-1 {
+            0% { 
+                transform: translate(-50%, -50%) rotate(0deg) translateY(-400px) rotate(0deg); 
+            }
+            100% { 
+                transform: translate(-50%, -50%) rotate(360deg) translateY(-400px) rotate(-360deg); 
+            }
+        }
+        
+        @keyframes satellite-spin-2 {
+            0% { 
+                transform: translate(-50%, -50%) rotate(90deg) translateY(-400px) rotate(-90deg); 
+            }
+            100% { 
+                transform: translate(-50%, -50%) rotate(450deg) translateY(-400px) rotate(-450deg); 
+            }
+        }
+        
+        @keyframes satellite-spin-3 {
+            0% { 
+                transform: translate(-50%, -50%) rotate(180deg) translateY(-400px) rotate(-180deg); 
+            }
+            100% { 
+                transform: translate(-50%, -50%) rotate(540deg) translateY(-400px) rotate(-540deg); 
+            }
+        }
+        
+        @keyframes satellite-spin-4 {
+            0% { 
+                transform: translate(-50%, -50%) rotate(270deg) translateY(-400px) rotate(-270deg); 
+            }
+            100% { 
+                transform: translate(-50%, -50%) rotate(630deg) translateY(-400px) rotate(-630deg); 
+            }
+        }
+        
+        @keyframes satelliteSignalPulse {
+            0%, 100% {
+                opacity: 0.5;
+                transform: translateX(-50%) scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: translateX(-50%) scale(2.5);
+            }
+        }
+        
+        @keyframes thrusterFlame {
+            0%, 100% {
+                opacity: 0.6;
+                transform: translateX(-50%) scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1.5);
+            }
+        }
+        
+        /* Responsive Earth Globe */
+        @media (max-width: 768px) {
+            .earth-globe-container {
+                width: 450px;
+                height: 450px;
+                opacity: 0.6;
+            }
+            
+            .planet-container {
+                width: 450px;
+                height: 450px;
+            }
+            
+            .night, .day, .clouds, .inner-shadow {
+                width: 450px;
+                height: 450px;
+            }
+            
+            .day {
+                margin-left: 99px;
+            }
+            
+            .clouds {
+                margin-left: 90px;
+            }
+            
+            .earth-satellites {
+                width: 600px;
+                height: 600px;
+            }
+            
+            .satellite {
+                width: 30px;
+                height: 24px;
+            }
+            
+            .satellite-body {
+                width: 16px;
+                height: 12px;
+            }
+            
+            .satellite-panel {
+                width: 12px;
+                height: 8px;
+            }
+            
+            .satellite-panel.left { left: -10px; }
+            .satellite-panel.right { right: -10px; }
+        }
+        
+        @media (max-width: 480px) {
+            .earth-globe-container {
+                width: 350px;
+                height: 350px;
+                opacity: 0.5;
+            }
+            
+            .planet-container {
+                width: 350px;
+                height: 350px;
+            }
+            
+            .night, .day, .clouds, .inner-shadow {
+                width: 350px;
+                height: 350px;
+            }
+            
+            .day {
+                margin-left: 77px;
+            }
+            
+            .clouds {
+                margin-left: 70px;
+            }
+            
+            .earth-satellites {
+                width: 480px;
+                height: 480px;
+            }
+            
+            .satellite {
+                width: 24px;
+                height: 18px;
+            }
+            
+            .satellite-body {
+                width: 12px;
+                height: 9px;
+            }
+            
+            .satellite-panel {
+                width: 9px;
+                height: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="grid-background"></div>
+    
+    <!-- Particles Background -->
+    <div id="particles-js" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></div>
+    
+    <!-- Realistic Earth Globe with Satellites -->
+    <div class="earth-globe-container">
+        <!-- Realistic Earth Planet -->
+        <div class="planet-container">
+            <div class="night"></div>
+            <div class="day"></div>
+            <div class="clouds"></div>
+            <div class="inner-shadow"></div>
+        </div>
+        
+        <!-- Simple Satellites Orbiting Earth -->
+        <div class="earth-satellites">
+            <!-- Orbital Ring -->
+            <div class="satellite-ring"></div>
+            
+            <!-- Satellite 1 -->
+            <div class="satellite satellite-1">
+                <div class="satellite-body"></div>
+                <div class="satellite-panel left"></div>
+                <div class="satellite-panel right"></div>
+                <div class="satellite-antenna"></div>
+            </div>
+            
+            <!-- Satellite 2 -->
+            <div class="satellite satellite-2">
+                <div class="satellite-body"></div>
+                <div class="satellite-panel left"></div>
+                <div class="satellite-panel right"></div>
+                <div class="satellite-antenna"></div>
+            </div>
+            
+            <!-- Satellite 3 -->
+            <div class="satellite satellite-3">
+                <div class="satellite-body"></div>
+                <div class="satellite-panel left"></div>
+                <div class="satellite-panel right"></div>
+                <div class="satellite-antenna"></div>
+            </div>
+            
+            <!-- Satellite 4 -->
+            <div class="satellite satellite-4">
+                <div class="satellite-body"></div>
+                <div class="satellite-panel left"></div>
+                <div class="satellite-panel right"></div>
+                <div class="satellite-antenna"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Neural Network Animation -->
+    <div class="neural-network" id="neuralNetwork"></div>
+    
+    <!-- Advanced GIS/Data Science Visual Elements -->
+    <div class="floating-elements">
+        <!-- Satellite Constellation -->
+        <div class="satellite-system">
+            <div class="satellite sat-1" data-orbit="1">
+                <div class="sat-body"></div>
+                <div class="sat-panel left"></div>
+                <div class="sat-panel right"></div>
+                <div class="sat-signal"></div>
+            </div>
+            <div class="satellite sat-2" data-orbit="2">
+                <div class="sat-body"></div>
+                <div class="sat-panel left"></div>
+                <div class="sat-panel right"></div>
+                <div class="sat-signal"></div>
+            </div>
+            <div class="satellite sat-3" data-orbit="3">
+                <div class="sat-body"></div>
+                <div class="sat-panel left"></div>
+                <div class="sat-panel right"></div>
+                <div class="sat-signal"></div>
+            </div>
+        </div>
+        
+        <!-- Data Pipeline Visualization -->
+        <div class="data-pipeline">
+            <div class="pipeline-node node-1">
+                <div class="node-core"></div>
+                <div class="node-rings"></div>
+            </div>
+            <div class="pipeline-node node-2">
+                <div class="node-core"></div>
+                <div class="node-rings"></div>
+            </div>
+            <div class="pipeline-node node-3">
+                <div class="node-core"></div>
+                <div class="node-rings"></div>
+            </div>
+            <div class="pipeline-connection conn-1"></div>
+            <div class="pipeline-connection conn-2"></div>
+        </div>
+        
+        <!-- Spatial Analysis Grid -->
+        <div class="spatial-grid">
+            <div class="grid-cell active" data-value="85"></div>
+            <div class="grid-cell" data-value="72"></div>
+            <div class="grid-cell active" data-value="94"></div>
+            <div class="grid-cell" data-value="61"></div>
+            <div class="grid-cell active" data-value="88"></div>
+            <div class="grid-cell" data-value="76"></div>
+        </div>
+        
+        <!-- Geographic Coordinate Overlay -->
+        <div class="coordinate-system">
+            <div class="coordinate-line lat-line"></div>
+            <div class="coordinate-line lon-line"></div>
+            <div class="coordinate-marker marker-1">
+                <span class="coord-text">37.8°N</span>
+            </div>
+            <div class="coordinate-marker marker-2">
+                <span class="coord-text">144.9°E</span>
+            </div>
+        </div>
+        
+        <!-- Enhanced Data Streams -->
+        <div class="advanced-data-streams">
+            <div class="data-packet packet-1"></div>
+            <div class="data-packet packet-2"></div>
+            <div class="data-packet packet-3"></div>
+            <div class="data-packet packet-4"></div>
+        </div>
+        
+        <!-- Python Code Streams -->
+        <div class="code-stream code-stream-1">import pandas as pd; df = pd.read_csv('spatial_data.csv'); gdf = gpd.GeoDataFrame(df)</div>
+        <div class="code-stream code-stream-2">from sklearn.ensemble import RandomForestRegressor; model.fit(X_train, y_train)</div>
+        <div class="code-stream code-stream-3">etl_pipeline = Pipeline([('extract', DataExtractor()), ('transform', SpatialTransformer())])</div>
+        <div class="code-stream code-stream-4">SELECT ST_Distance(geom1, geom2) FROM spatial_analysis WHERE region = 'urban'</div>
+        
+        <!-- Advanced ETL Pipeline Animation -->
+        <div class="etl-pipeline">
+            <div class="etl-container">
+                <div class="etl-stage extract">
+                    <div class="etl-icon">📥</div>
+                    <div class="etl-text">Extract</div>
+                </div>
+                <div class="etl-stage transform">
+                    <div class="etl-icon">⚙️</div>
+                    <div class="etl-text">Transform</div>
+                </div>
+                <div class="etl-stage load">
+                    <div class="etl-icon">📤</div>
+                    <div class="etl-text">Load</div>
+                </div>
+                <div class="etl-connection conn-1"></div>
+                <div class="etl-connection conn-2"></div>
+                <div class="etl-data-points">
+                    <div class="data-point point-1"></div>
+                    <div class="data-point point-2"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating Charts -->
+        <div class="floating-charts">
+            <div class="chart-element bar-chart">
+                <div class="chart-bars">
+                    <div class="bar bar-1"></div>
+                    <div class="bar bar-2"></div>
+                    <div class="bar bar-3"></div>
+                    <div class="bar bar-4"></div>
+                    <div class="bar bar-5"></div>
+                </div>
+            </div>
+            <div class="chart-element pie-chart"></div>
+            <div class="chart-element line-chart">
+                <div class="line-path"></div>
+            </div>
+        </div>
+        
+        <!-- Additional Satellite Trails -->
+        <div class="satellite-trails">
+            <div class="satellite-trail trail-1"></div>
+            <div class="satellite-trail trail-2"></div>
+            <div class="satellite-trail trail-3"></div>
+        </div>
+        
+        <!-- Data Analysis Indicators -->
+        <div class="analysis-indicators">
+            <div class="analysis-circle analysis-1">
+                <div class="analysis-center"></div>
+            </div>
+            <div class="analysis-circle analysis-2">
+                <div class="analysis-center"></div>
+            </div>
+        </div>
+        
+        <!-- Floating Tech Icons -->
+        <div class="tech-icons">
+            <div class="tech-icon python-icon">🐍</div>
+            <div class="tech-icon database-icon">🗄️</div>
+            <div class="tech-icon cloud-icon">☁️</div>
+            <div class="tech-icon chart-icon">📊</div>
+        </div>
+        
+        <!-- Advanced GIS Mapping Container -->
+        <div class="gis-map-container">
+            <div class="map-grid"></div>
+            <div class="map-layers">
+                <div class="map-layer layer-1"></div>
+                <div class="map-layer layer-2"></div>
+                <div class="map-layer layer-3"></div>
+            </div>
+            <div class="map-connections">
+                <div class="map-line line-1"></div>
+                <div class="map-line line-2"></div>
+            </div>
+        </div>
+        
+        <!-- Expanded Database Query Container -->
+        <div class="database-query-container">
+            <div class="query-header">
+                Advanced PostGIS Query Engine
+            </div>
+            <div class="query-content">
+                <div class="query-line"><span class="query-keyword">WITH</span> <span class="query-table">spatial_analysis</span> <span class="query-keyword">AS</span> (</div>
+                <div class="query-line">&nbsp;&nbsp;<span class="query-keyword">SELECT</span></div>
+                <div class="query-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="query-table">properties</span>.<span class="query-function">id</span>,</div>
+                <div class="query-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="query-function">ST_Area</span>(<span class="query-table">properties</span>.<span class="query-function">geom</span>) <span class="query-keyword">AS</span> <span class="query-table">area</span>,</div>
+                <div class="query-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="query-function">ST_Centroid</span>(<span class="query-table">properties</span>.<span class="query-function">geom</span>) <span class="query-keyword">AS</span> <span class="query-table">center</span>,</div>
+                <div class="query-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="query-table">demographics</span>.<span class="query-function">population</span></div>
+                <div class="query-line">&nbsp;&nbsp;<span class="query-keyword">FROM</span> <span class="query-table">urban_properties</span> <span class="query-table">properties</span></div>
+                <div class="query-line">&nbsp;&nbsp;<span class="query-keyword">JOIN</span> <span class="query-table">census_data</span> <span class="query-table">demographics</span></div>
+                <div class="query-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="query-keyword">ON</span> <span class="query-function">ST_Within</span>(<span class="query-table">properties</span>.<span class="query-function">geom</span>, <span class="query-table">demographics</span>.<span class="query-function">boundary</span>)</div>
+                <div class="query-line">&nbsp;&nbsp;<span class="query-keyword">WHERE</span> <span class="query-function">ST_DWithin</span>(<span class="query-table">properties</span>.<span class="query-function">geom</span>,</div>
+                <div class="query-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="query-function">ST_GeomFromText</span>(<span class="query-string">'POINT(-87.6298 41.8781)'</span>), 5000)</div>
+                <div class="query-line">)</div>
+                <div class="query-line"><span class="query-keyword">SELECT</span> <span class="query-operator">*</span> <span class="query-keyword">FROM</span> <span class="query-table">spatial_analysis</span></div>
+                <div class="query-line"><span class="query-keyword">ORDER BY</span> <span class="query-table">population</span> <span class="query-keyword">DESC</span>, <span class="query-table">area</span> <span class="query-keyword">ASC</span>;<span class="query-cursor"></span></div>
+            </div>
+            <div class="query-results">
+                ✓ Query executed successfully
+                <div class="query-stats">
+                    <span>Rows: 23,847</span>
+                    <span>Execution: 234ms</span>
+                    <span>Cache: HIT</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Statistical Analysis Container -->
+        <div class="statistical-analysis-container">
+            <div class="stats-header">
+                Bayesian Statistical Modeling
+            </div>
+            <div class="stats-content">
+                <div class="stats-line comment"># Import statistical analysis libraries</div>
+                <div class="stats-line library">import</div> <div class="stats-line variable">scipy.stats</div> <div class="stats-line library">as</div> <div class="stats-line variable">stats</div>
+                <div class="stats-line library">import</div> <div class="stats-line variable">statsmodels.api</div> <div class="stats-line library">as</div> <div class="stats-line variable">sm</div>
+                <div class="stats-line library">from</div> <div class="stats-line variable">pymc3</div> <div class="stats-line library">import</div> <div class="stats-line function">Model, Normal, sample</div>
+                <div class="stats-line">&nbsp;</div>
+                <div class="stats-line comment"># Bayesian regression analysis</div>
+                <div class="stats-line library">with</div> <div class="stats-line function">Model</div>() <div class="stats-line library">as</div> <div class="stats-line variable">bayesian_model</div>:
+                <div class="stats-line">&nbsp;&nbsp;<span class="stats-line variable">alpha</span> <span class="stats-line operator">=</span> <span class="stats-line function">Normal</span>(<span class="stats-line string">'alpha'</span>, mu=<span class="stats-line number">0</span>, sigma=<span class="stats-line number">10</span>)</div>
+                <div class="stats-line">&nbsp;&nbsp;<span class="stats-line variable">beta</span> <span class="stats-line operator">=</span> <span class="stats-line function">Normal</span>(<span class="stats-line string">'beta'</span>, mu=<span class="stats-line number">0</span>, sigma=<span class="stats-line number">10</span>, shape=<span class="stats-line number">3</span>)</div>
+                <div class="stats-line">&nbsp;&nbsp;<span class="stats-line variable">mu</span> <span class="stats-line operator">=</span> <span class="stats-line variable">alpha</span> + <span class="stats-line function">pm.math.dot</span>(<span class="stats-line variable">X</span>, <span class="stats-line variable">beta</span>)</div>
+                <div class="stats-line">&nbsp;</div>
+                <div class="stats-line comment"># MCMC sampling for posterior distribution</div>
+                <div class="stats-line variable">trace</div> <div class="stats-line operator">=</div> <div class="stats-line function">sample</div>(<div class="stats-line number">2000</div>, tune=<div class="stats-line number">1000</div>, cores=<div class="stats-line number">4</div>)
+                <div class="stats-line variable">summary</div> <div class="stats-line operator">=</div> <div class="stats-line function">pm.summary</div>(<div class="stats-line variable">trace</div>)
+                <div class="stats-line">&nbsp;</div>
+                <div class="stats-line comment"># Model diagnostics and validation</div>
+                <div class="stats-line variable">r_hat</div> <div class="stats-line operator">=</div> <div class="stats-line function">pm.rhat</div>(<div class="stats-line variable">trace</div>)
+                <div class="stats-line variable">ess</div> <div class="stats-line operator">=</div> <div class="stats-line function">pm.ess</div>(<div class="stats-line variable">trace</div>)
+                <div class="stats-line function">print</div>(<div class="stats-line string">f"Convergence: R-hat < 1.1: {(r_hat < 1.1).all()}"</div>)
+            </div>
+        </div>
+        
+        <!-- Advanced Satellite Constellation -->
+        <div class="satellite-constellation">
+            <div class="orbit-ring orbit-1"></div>
+            <div class="orbit-ring orbit-2"></div>
+            <div class="orbit-ring orbit-3"></div>
+            
+            <div class="advanced-satellite sat-advanced-1">
+                <div class="sat-advanced-body"></div>
+                <div class="sat-advanced-panel left"></div>
+                <div class="sat-advanced-panel right"></div>
+                <div class="sat-advanced-signal"></div>
+            </div>
+            
+            <div class="advanced-satellite sat-advanced-2">
+                <div class="sat-advanced-body"></div>
+                <div class="sat-advanced-panel left"></div>
+                <div class="sat-advanced-panel right"></div>
+                <div class="sat-advanced-signal"></div>
+            </div>
+            
+            <div class="advanced-satellite sat-advanced-3">
+                <div class="sat-advanced-body"></div>
+                <div class="sat-advanced-panel left"></div>
+                <div class="sat-advanced-panel right"></div>
+                <div class="sat-advanced-signal"></div>
+            </div>
+        </div>
+        
+        <!-- Expanded Python Code Container -->
+        <div class="spatial-code-container">
+            <div class="code-header">
+                Advanced Geospatial Analysis Pipeline
+            </div>
+            <div class="code-content">
+                <div class="code-line comment"># Import geospatial libraries</div>
+                <div class="code-line keyword">import</div> <div class="code-line variable">geopandas</div> <div class="code-line keyword">as</div> <div class="code-line variable">gpd</div>
+                <div class="code-line keyword">import</div> <div class="code-line variable">pandas</div> <div class="code-line keyword">as</div> <div class="code-line variable">pd</div>
+                <div class="code-line keyword">from</div> <div class="code-line variable">sklearn.ensemble</div> <div class="code-line keyword">import</div> <div class="code-line function">RandomForestRegressor</div>
+                <div class="code-line keyword">from</div> <div class="code-line variable">shapely.geometry</div> <div class="code-line keyword">import</div> <div class="code-line function">Point, Polygon</div>
+                <div class="code-line keyword">import</div> <div class="code-line variable">numpy</div> <div class="code-line keyword">as</div> <div class="code-line variable">np</div>
+                <div class="code-line">&nbsp;</div>
+                <div class="code-line comment"># Load and process spatial data</div>
+                <div class="code-line variable">gdf</div> <div class="code-line operator">=</div> <div class="code-line function">gpd.read_file</div><div class="code-line">(</div><div class="code-line string">'urban_planning_data.shp'</div><div class="code-line">)</div>
+                <div class="code-line variable">buffer_zones</div> <div class="code-line operator">=</div> <div class="code-line variable">gdf.geometry</div><div class="code-line">.</div><div class="code-line function">buffer</div><div class="code-line">(1000)</div>
+                <div class="code-line variable">intersections</div> <div class="code-line operator">=</div> <div class="code-line function">gpd.overlay</div><div class="code-line">(gdf, buffer_zones, how=</div><div class="code-line string">'intersection'</div><div class="code-line">)</div>
+                <div class="code-line">&nbsp;</div>
+                <div class="code-line comment"># Feature engineering for ML model</div>
+                <div class="code-line variable">features</div> <div class="code-line operator">=</div> <div class="code-line variable">intersections</div><div class="code-line">[[</div><div class="code-line string">'population', 'area', 'density'</div><div class="code-line">]]</div>
+                <div class="code-line variable">features</div><div class="code-line">[</div><div class="code-line string">'log_area'</div><div class="code-line">]</div> <div class="code-line operator">=</div> <div class="code-line function">np.log</div><div class="code-line">(features[</div><div class="code-line string">'area'</div><div class="code-line">] + 1)</div>
+                <div class="code-line variable">features</div><div class="code-line">[</div><div class="code-line string">'pop_density'</div><div class="code-line">]</div> <div class="code-line operator">=</div> <div class="code-line variable">features</div><div class="code-line">[</div><div class="code-line string">'population'</div><div class="code-line">] / features[</div><div class="code-line string">'area'</div><div class="code-line">]</div>
+                <div class="code-line">&nbsp;</div>
+                <div class="code-line comment"># Train Random Forest model</div>
+                <div class="code-line variable">X_train</div><div class="code-line">,</div> <div class="code-line variable">X_test</div><div class="code-line">,</div> <div class="code-line variable">y_train</div><div class="code-line">,</div> <div class="code-line variable">y_test</div> <div class="code-line operator">=</div> <div class="code-line function">train_test_split</div><div class="code-line">(features, target)</div>
+                <div class="code-line variable">model</div> <div class="code-line operator">=</div> <div class="code-line function">RandomForestRegressor</div><div class="code-line">(n_estimators=</div><div class="code-line">100</div><div class="code-line">, random_state=</div><div class="code-line">42</div><div class="code-line">)</div>
+                <div class="code-line variable">model</div><div class="code-line">.</div><div class="code-line function">fit</div><div class="code-line">(X_train, y_train)</div>
+                <div class="code-line variable">accuracy</div> <div class="code-line operator">=</div> <div class="code-line variable">model</div><div class="code-line">.</div><div class="code-line function">score</div><div class="code-line">(X_test, y_test)</div>
+                <div class="code-line function">print</div><div class="code-line">(</div><div class="code-line string">f"Model R² Score: {accuracy:.3f}"</div><div class="code-line">)</div>
+                <div class="code-line">&nbsp;</div>
+                <div class="code-line comment"># Export results to PostGIS database</div>
+                <div class="code-line variable">engine</div> <div class="code-line operator">=</div> <div class="code-line function">create_engine</div><div class="code-line">(DATABASE_URL)</div>
+                <div class="code-line variable">intersections</div><div class="code-line">.</div><div class="code-line function">to_postgis</div><div class="code-line">(</div><div class="code-line string">'analysis_results'</div><div class="code-line">, engine)</div>
+            </div>
+        </div>
+        
+        
+        <!-- Advanced Tech Icons -->
+        <div class="tech-icons-advanced">
+            <div class="tech-brand-icon aws-icon">☁️</div>
+            <div class="tech-brand-icon azure-icon">🔷</div>
+            <div class="tech-brand-icon arcgis-icon">🗺️</div>
+            <div class="tech-brand-icon oracle-icon">🏛️</div>
+            <div class="tech-brand-icon postgresql-icon">🐘</div>
+            <div class="tech-brand-icon docker-icon">🐳</div>
+            <div class="tech-brand-icon kubernetes-icon">⚡</div>
+            <div class="tech-brand-icon git-icon">📡</div>
+        </div>
+        
+        <!-- Data Visualization Nodes -->
+        <div class="data-visualization">
+            <div class="data-flow-vertical"></div>
+            <div class="data-node node-top"></div>
+            <div class="data-node node-middle"></div>
+            <div class="data-node node-bottom"></div>
+        </div>
+    </div>
+    
+    <!-- Main Loading Container -->
+    <div class="loading-container">
+        <div class="logo-container">
+            <div class="logo">MOHAMMAD AFZAL KHAN</div>
+        </div>
+        
+        <div class="title">GIS • Data Science • Analytics</div>
+        <div class="subtitle">Architecting intelligent geospatial solutions for tomorrow</div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="loading-text" id="loadingText">Initializing Systems...</div>
+        <div class="loading-percentage" id="loadingPercentage">0%</div>
+    </div>
+    
+    <!-- Story Container -->
+    <div class="story-container">
+        <div class="story-text" id="storyText">
+            Loading geospatial intelligence frameworks...
+        </div>
+    </div>
+
+    <script>
+        // Enhanced loading sequence with detailed GIS/Data Science storytelling
+        const loadingSteps = [
+            { text: "Initializing spatial coordinate systems...", story: "Establishing WGS84 and UTM projections for global data integration..." },
+            { text: "Deploying satellite constellation...", story: "Connecting to Landsat 8, Sentinel-2, and MODIS for multi-spectral analysis..." },
+            { text: "Building ETL data pipelines...", story: "Creating automated workflows for real-time geospatial data ingestion..." },
+            { text: "Training machine learning models...", story: "Optimizing Random Forest and SVM algorithms on 10TB+ datasets..." },
+            { text: "Processing remote sensing imagery...", story: "Applying NDVI calculations and spectral classification algorithms..." },
+            { text: "Implementing spatial analysis engines...", story: "Deploying PostGIS and spatial indexing for billion-point datasets..." },
+            { text: "Calibrating Bayesian statistics models...", story: "Fine-tuning MCMC sampling for climate-health correlations..." },
+            { text: "Rendering interactive visualizations...", story: "Generating D3.js and Leaflet maps with real-time data binding..." },
+            { text: "Establishing cloud infrastructure...", story: "Scaling AWS/Azure compute clusters for parallel geospatial processing..." },
+            { text: "Spatial intelligence system online!", story: "Ready to explore the convergence of geography, data, and insight." }
+        ];
+        
+        let currentStep = 0;
+        let progress = 0;
+        
+        // DOM elements
+        const progressBar = document.getElementById('progressBar');
+        const loadingText = document.getElementById('loadingText');
+        const loadingPercentage = document.getElementById('loadingPercentage');
+        const storyText = document.getElementById('storyText');
+        
+        // Neural network animation
+        function createNeuralNetwork() {
+            const network = document.getElementById('neuralNetwork');
+            const nodes = [];
+            const connections = [];
+            
+            // Create nodes
+            for (let i = 0; i < 20; i++) {
+                const node = document.createElement('div');
+                node.className = 'node';
+                node.style.left = Math.random() * window.innerWidth + 'px';
+                node.style.top = Math.random() * window.innerHeight + 'px';
+                node.style.animationDelay = Math.random() * 2 + 's';
+                network.appendChild(node);
+                nodes.push(node);
+            }
+            
+            // Create connections
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    if (Math.random() > 0.7) { // 30% chance of connection
+                        const connection = document.createElement('div');
+                        connection.className = 'connection';
+                        
+                        const node1Rect = nodes[i].getBoundingClientRect();
+                        const node2Rect = nodes[j].getBoundingClientRect();
+                        
+                        const x1 = node1Rect.left + node1Rect.width / 2;
+                        const y1 = node1Rect.top + node1Rect.height / 2;
+                        const x2 = node2Rect.left + node2Rect.width / 2;
+                        const y2 = node2Rect.top + node2Rect.height / 2;
+                        
+                        const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+                        const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+                        
+                        connection.style.width = length + 'px';
+                        connection.style.left = x1 + 'px';
+                        connection.style.top = y1 + 'px';
+                        connection.style.transform = `rotate(${angle}deg)`;
+                        connection.style.animationDelay = Math.random() * 3 + 's';
+                        
+                        network.appendChild(connection);
+                    }
+                }
+            }
+        }
+        
+        // Update loading progress
+        function updateProgress() {
+            const step = loadingSteps[currentStep];
+            
+            loadingText.textContent = step.text;
+            storyText.textContent = step.story;
+            
+            // Animate progress
+            const targetProgress = ((currentStep + 1) / loadingSteps.length) * 100;
+            
+            const progressInterval = setInterval(() => {
+                progress += 2;
+                if (progress >= targetProgress) {
+                    progress = targetProgress;
+                    clearInterval(progressInterval);
+                    
+                    if (currentStep < loadingSteps.length - 1) {
+                        currentStep++;
+                        setTimeout(updateProgress, 800);
+                    } else {
+                        setTimeout(() => {
+                            // Set flag and redirect to main portfolio
+                            sessionStorage.setItem('from_loading', 'true');
+                            window.location.href = '/';
+                        }, 2000);
+                    }
+                }
+                
+                progressBar.style.width = progress + '%';
+                loadingPercentage.textContent = Math.round(progress) + '%';
+            }, 50);
+        }
+        
+        // Enhanced animations using Anime.js
+        function initAdvancedAnimations() {
+            // Animate satellite signals with Anime.js
+            anime({
+                targets: '.sat-advanced-signal',
+                scale: [1, 2, 1],
+                opacity: [0.4, 1, 0.4],
+                duration: 2000,
+                easing: 'easeInOutSine',
+                loop: true
+            });
+            
+            // Animate data points in ETL pipeline
+            anime({
+                targets: '.data-point',
+                scale: [0.5, 1.5, 0.5],
+                duration: 1500,
+                easing: 'easeInOutQuad',
+                loop: true,
+                delay: anime.stagger(500)
+            });
+            
+            // Animate map layers
+            anime({
+                targets: '.map-layer',
+                scale: [1, 1.3, 1],
+                opacity: [0.7, 1, 0.7],
+                duration: 2500,
+                easing: 'easeInOutSine',
+                loop: true,
+                delay: anime.stagger(800)
+            });
+            
+            // Animate tech icons with rotation
+            anime({
+                targets: '.tech-icon',
+                rotate: [0, 360],
+                scale: [1, 1.2, 1],
+                duration: 4000,
+                easing: 'easeInOutQuad',
+                loop: true,
+                delay: anime.stagger(1000)
+            });
+            
+            // Animate Earth planet glow
+            anime({
+                targets: '.planet-container',
+                scale: [1, 1.02, 1],
+                duration: 6000,
+                easing: 'easeInOutSine',
+                loop: true
+            });
+            
+            // Animate satellite antennas
+            anime({
+                targets: '.satellite-antenna',
+                rotateZ: [0, 15, -15, 0],
+                duration: 4000,
+                easing: 'easeInOutSine',
+                loop: true,
+                delay: anime.stagger(1000)
+            });
+            
+            // Animate satellite solar panels
+            anime({
+                targets: '.satellite-panel',
+                scaleY: [1, 1.1, 1],
+                duration: 3000,
+                easing: 'easeInOutSine',
+                loop: true,
+                delay: anime.stagger(500)
+            });
+            
+            // Animate satellite orbital ring
+            anime({
+                targets: '.satellite-ring',
+                rotate: [0, 360],
+                duration: 60000,
+                easing: 'linear',
+                loop: true
+            });
+        }
+        
+        // Particles.js background
+        function initParticles() {
+            if (window.particlesJS) {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: { value: 30 },
+                        color: { value: '#2a9d8f' },
+                        shape: { type: 'circle' },
+                        opacity: { value: 0.3 },
+                        size: { value: 2 },
+                        line_linked: {
+                            enable: true,
+                            distance: 150,
+                            color: '#2a9d8f',
+                            opacity: 0.2,
+                            width: 1
+                        },
+                        move: {
+                            enable: true,
+                            speed: 1,
+                            direction: 'none',
+                            random: false,
+                            straight: false,
+                            out_mode: 'out',
+                            bounce: false
+                        }
+                    },
+                    interactivity: { detect_on: 'canvas', events: { onhover: { enable: false }, onclick: { enable: false } } },
+                    retina_detect: true
+                });
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createNeuralNetwork();
+            initAdvancedAnimations();
+            initParticles();
+            setTimeout(updateProgress, 1000);
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            document.getElementById('neuralNetwork').innerHTML = '';
+            createNeuralNetwork();
+        });
+    </script>
+</body>
+</html>

@@ -241,10 +241,14 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // Initialize radar chart on page load
+        // Initialize enhanced charts
         if (typeof Chart !== 'undefined') {
-            // Wait for DOM to be fully loaded with data
-            setTimeout(initSkillsRadarChart, 500);
+            setTimeout(() => {
+                initSkillsDistributionChart();
+                initSkillsProficiencyChart();
+                initSoftwareCategoryChart();
+                initLanguagesChart();
+            }, 500);
         }
         
         // Animate skill cards on scroll
@@ -1532,5 +1536,356 @@ function initializeDataAnimation() {
             element.x = Math.random() * canvas.width;
             element.y = Math.random() * canvas.height;
         });
+    });
+}
+
+// Enhanced Chart Implementations
+function initSkillsDistributionChart() {
+    const canvas = document.getElementById('skills-distribution-chart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Define skill categories and their distribution
+    const categories = ['GIS & Remote Sensing', 'Data Science & Analytics', 'Programming & Development', 'Machine Learning & AI', 'Database & Cloud', 'Statistics & Modeling'];
+    const data = [25, 22, 20, 15, 10, 8];
+    
+    // Use CSS custom properties for colors
+    const colors = [
+        'rgba(42, 157, 143, 0.8)',
+        'rgba(233, 196, 106, 0.8)',
+        'rgba(244, 162, 97, 0.8)',
+        'rgba(231, 111, 81, 0.8)',
+        'rgba(38, 70, 83, 0.8)',
+        'rgba(42, 157, 143, 0.6)'
+    ];
+    
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: categories,
+            datasets: [{
+                label: 'Skills Distribution',
+                data: data,
+                backgroundColor: colors,
+                borderColor: colors.map(color => color.replace('0.8', '1').replace('0.6', '1')),
+                borderWidth: 2,
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15,
+                        font: {
+                            family: "'Poppins', sans-serif",
+                            size: 12
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(38, 70, 83, 0.9)',
+                    titleFont: {
+                        family: "'Poppins', sans-serif",
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        family: "'Poppins', sans-serif",
+                        size: 13
+                    },
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = Math.round((value / total) * 100);
+                            return `${label}: ${percentage}%`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function initSkillsProficiencyChart() {
+    const canvas = document.getElementById('skills-proficiency-chart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Define top skills and their proficiency levels
+    const skills = ['Python', 'ArcGIS/QGIS', 'SQL', 'R', 'JavaScript', 'Machine Learning', 'Remote Sensing', 'Spatial Analysis'];
+    const proficiency = [95, 94, 92, 90, 87, 85, 92, 94];
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: skills,
+            datasets: [{
+                label: 'Proficiency Level',
+                data: proficiency,
+                backgroundColor: 'rgba(42, 157, 143, 0.8)',
+                borderColor: 'rgba(42, 157, 143, 1)',
+                borderWidth: 2,
+                borderRadius: 6,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y', // This makes it horizontal
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        },
+                        font: {
+                            family: "'Poppins', sans-serif"
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(42, 157, 143, 0.1)'
+                    }
+                },
+                y: {
+                    ticks: {
+                        font: {
+                            family: "'Poppins', sans-serif",
+                            weight: 'bold',
+                            size: 12
+                        }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(38, 70, 83, 0.9)',
+                    titleFont: {
+                        family: "'Poppins', sans-serif",
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        family: "'Poppins', sans-serif",
+                        size: 13
+                    },
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: function(context) {
+                            return `Proficiency: ${context.parsed.x}%`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function initSoftwareCategoryChart() {
+    const canvas = document.getElementById('software-category-chart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Calculate category distribution
+    const categories = {};
+    const softwareData = [
+        'GIS', 'Analytics', 'Web Framework', 'Database', 'Development', 
+        'Visualization', 'DevOps', 'Version Control', 'Data Science', 
+        'Machine Learning', 'Deep Learning', 'Remote Sensing', 'Cloud'
+    ];
+    
+    // Count occurrences (simulated based on your skills)
+    const categoryData = {
+        'GIS': 3,
+        'Analytics': 2,
+        'Web Framework': 2,
+        'Database': 1,
+        'Development': 2,
+        'Visualization': 3,
+        'DevOps': 1,
+        'Data Science': 2,
+        'Machine Learning': 2,
+        'Cloud': 2
+    };
+    
+    const labels = Object.keys(categoryData);
+    const data = Object.values(categoryData);
+    const colors = [
+        'rgba(42, 157, 143, 0.8)',
+        'rgba(233, 196, 106, 0.8)',
+        'rgba(244, 162, 97, 0.8)',
+        'rgba(231, 111, 81, 0.8)',
+        'rgba(38, 70, 83, 0.8)',
+        'rgba(42, 157, 143, 0.6)',
+        'rgba(233, 196, 106, 0.6)',
+        'rgba(244, 162, 97, 0.6)',
+        'rgba(231, 111, 81, 0.6)',
+        'rgba(38, 70, 83, 0.6)'
+    ];
+    
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: colors,
+                borderColor: colors.map(color => color.replace('0.8', '1').replace('0.6', '1')),
+                borderWidth: 2,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15,
+                        font: {
+                            family: "'Poppins', sans-serif",
+                            size: 12
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(38, 70, 83, 0.9)',
+                    titleFont: {
+                        family: "'Poppins', sans-serif",
+                        size: 14
+                    },
+                    bodyFont: {
+                        family: "'Poppins', sans-serif",
+                        size: 13
+                    },
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = Math.round((value / total) * 100);
+                            return `${label}: ${value} tools (${percentage}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function initLanguagesChart() {
+    const canvas = document.getElementById('languages-chart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    
+    const languages = ['English', 'Hindi', 'Urdu', 'Arabic'];
+    const proficiency = [100, 100, 90, 40];
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: languages,
+            datasets: [{
+                label: 'Proficiency %',
+                data: proficiency,
+                backgroundColor: [
+                    'rgba(42, 157, 143, 0.8)',
+                    'rgba(233, 196, 106, 0.8)',
+                    'rgba(244, 162, 97, 0.8)',
+                    'rgba(231, 111, 81, 0.8)'
+                ],
+                borderColor: [
+                    'rgba(42, 157, 143, 1)',
+                    'rgba(233, 196, 106, 1)',
+                    'rgba(244, 162, 97, 1)',
+                    'rgba(231, 111, 81, 1)'
+                ],
+                borderWidth: 2,
+                borderRadius: 8,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'x',
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        },
+                        font: {
+                            family: "'Poppins', sans-serif"
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(42, 157, 143, 0.1)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        font: {
+                            family: "'Poppins', sans-serif",
+                            weight: 'bold'
+                        }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(38, 70, 83, 0.9)',
+                    titleFont: {
+                        family: "'Poppins', sans-serif",
+                        size: 14
+                    },
+                    bodyFont: {
+                        family: "'Poppins', sans-serif",
+                        size: 13
+                    },
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: function(context) {
+                            return `Proficiency: ${context.parsed.y}%`;
+                        }
+                    }
+                }
+            }
+        }
     });
 }
